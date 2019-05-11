@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan(basePackages = "com.yonyougov.portal.engine.mapper")
 @EnableTransactionManagement
 @EnableAspectJAutoProxy
-public class PortalEngApplication {
+public class PortalEngineApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PortalEngApplication.class, args);
+        SpringApplication.run(PortalEngineApplication.class, args);
     }
 
 }

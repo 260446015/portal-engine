@@ -1,7 +1,5 @@
 package com.yonyougov.portal.engine.service.impl;
 
-import com.yonyougov.eng.entity.EngComp;
-import com.yonyougov.eng.mapper.EngCompMapper;
 import com.yonyougov.portal.engine.entity.EngComp;
 import com.yonyougov.portal.engine.mapper.EngCompMapper;
 import org.springframework.stereotype.Service;
