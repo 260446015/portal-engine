@@ -1,0 +1,16 @@
+spring:
+  druid:
+    url: jdbc:oracle:thin:@localhost:1521:orcl
+    username: yindawei
+    password: 123456
+  jpa:
+    database: ORACLE
+    show-sql: true
+    hibernate:
+      dialect: org.hibernate.dialect.Oracle10gDialect
+      ddl-auto: none
+com:
+  ufgov:
+    config:
+      showSwagger: false
+
