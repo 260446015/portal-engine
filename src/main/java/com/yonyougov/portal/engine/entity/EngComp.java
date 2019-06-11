@@ -19,20 +19,20 @@ public class EngComp implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "主键",hidden = true)
     private String id;
 
     /**
      * 时间戳
      */
-    @ApiModelProperty(value = "时间戳")
+    @ApiModelProperty(value = "时间戳",hidden = true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date ts;
 
     /**
      * 删除标志
      */
-    @ApiModelProperty(value = "删除标志")
+    @ApiModelProperty(value = "删除标志",hidden = true)
     private String dr;
 
     /**
@@ -56,7 +56,7 @@ public class EngComp implements Serializable {
     /**
      * 组件类型0bootstrap1vue
      */
-    @ApiModelProperty(value = "组件类型0bootstrap1vue")
+    @ApiModelProperty(value = "组件类型0bootstrap 1vue")
     private String compType;
 
     /**

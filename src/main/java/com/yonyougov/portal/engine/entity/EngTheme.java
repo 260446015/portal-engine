@@ -19,7 +19,7 @@ public class EngTheme implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "主键",hidden = true)
     private String id;
 
     /**
@@ -31,14 +31,14 @@ public class EngTheme implements Serializable {
     /**
      * 时间戳
      */
-    @ApiModelProperty(value = "时间戳")
+    @ApiModelProperty(value = "时间戳",hidden = true)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date ts;
 
     /**
      * 删除标记
      */
-    @ApiModelProperty(value = "删除标记")
+    @ApiModelProperty(value = "删除标记",hidden = true)
     private String dr;
 
     /**

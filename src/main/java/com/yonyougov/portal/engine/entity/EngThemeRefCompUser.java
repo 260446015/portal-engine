@@ -19,7 +19,7 @@ public class EngThemeRefCompUser implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "主键",hidden = true)
     private String id;
 
     /**

@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @Data
 public class EngThemeRefUser implements Serializable {
-    @ApiModelProperty(value = "null")
+    @ApiModelProperty(value = "主键",hidden = true)
     private String id;
 
     /**

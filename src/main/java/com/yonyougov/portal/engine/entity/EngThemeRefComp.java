@@ -2,8 +2,9 @@ package com.yonyougov.portal.engine.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author yindwe@yonyu.com
@@ -16,7 +17,7 @@ public class EngThemeRefComp implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "主键",hidden = true)
     private String id;
 
     /**
