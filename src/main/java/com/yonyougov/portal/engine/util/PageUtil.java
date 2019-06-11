@@ -31,7 +31,7 @@ public class PageUtil {
         Elements comps = document.getElementsByAttribute(MsgConstant.COMP_ID);
         comps.forEach(c -> {
             JSONObject data = new JSONObject();
-            data.put("parentId", c.parent().id());
+            data.put(MsgConstant.LAYOUTID, c.parent().attr(MsgConstant.LAYOUTID));
             data.put("comp",c);
             result.add(data);
             c.replaceWith(new Element(MsgConstant.COMP_ID));

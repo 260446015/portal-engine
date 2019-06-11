@@ -79,7 +79,7 @@ public class EngThemeService {
 
     private void saveEngThemeRefComp(String themeId, List<JSONObject> jsonObjects) {
         jsonObjects.forEach(p -> {
-            String parentId = p.getString("parentId");
+            String parentId = p.getString(MsgConstant.LAYOUTID);
             Element element = (Element) p.get("comp");
             EngThemeRefComp engThemeRefComp = new EngThemeRefComp();
             engThemeRefComp.setCompId(element.attr(MsgConstant.COMP_ID));

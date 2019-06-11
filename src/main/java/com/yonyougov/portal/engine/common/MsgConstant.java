@@ -11,7 +11,7 @@ public class MsgConstant {
     public static final String DATA_NOT_FOUNT = "未查询到相应数据";
     public static final int PAGE_SIZE = 10;
     //模板标识
-    public static final String COMP_ID = "compId";
+    public static final String COMP_ID = "compid";
     public static final String THEME_ID = "themeid";
-    public static final String PARENT_ID = "parentId";
+    public static final String LAYOUTID = "layoutid";
 }
