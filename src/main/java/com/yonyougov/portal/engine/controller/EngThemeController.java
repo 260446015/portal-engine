@@ -27,7 +27,7 @@ import java.io.PrintWriter;
 @RestController
 @RequestMapping("apis/engTheme")
 @Api(value = "门户主题", description = "门户主题")
-public class EngThemeController extends BaseController{
+public class EngThemeController extends BaseController {
 
     @Resource
     private EngThemeService engThemeService;
@@ -39,6 +39,19 @@ public class EngThemeController extends BaseController{
             Assert.notNull(engTheme.getName(), "名称不能为空");
             Assert.notNull(engTheme.getTemplate(), "模板内容不能为空");
             engThemeService.insertToBackstage(engTheme);
+        } catch (Exception e) {
+            return error(e.getMessage());
+        }
+        return success(MsgConstant.OPERATION_SUCCESS);
+    }
+
+    @ApiOperation(value = "后台管理员修改主题")
+    @PatchMapping("backstage/{id}")
+    public ApiResult updateForBackstage(@PathVariable String id, @RequestBody EngTheme engTheme) {
+        try {
+            Assert.notNull(engTheme.getName(), "名称不能为空");
+            Assert.notNull(engTheme.getTemplate(), "模板内容不能为空");
+            engThemeService.updateToBackstage(id, engTheme);
         } catch (Exception e) {
             return error(e.getMessage());
         }

@@ -194,4 +194,7 @@
       select <include refid="Base_Column_List"/>
       from ENG_THEME_REF_COMP where theme_id = #{id,jdbcType=VARCHAR}
   </select>
+    <delete id="deleteByThemeId">
+      delete from ENG_THEME_REF_COMP where theme_id = #{id,jdbcType=VARCHAR}
+    </delete>
 </mapper>

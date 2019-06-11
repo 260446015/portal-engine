@@ -17,5 +17,6 @@ logging:
   level:
     com:
       yonyougov:
-        eng:
-          mapper: debug
+        portal:
+          engine:
+            mapper: debug

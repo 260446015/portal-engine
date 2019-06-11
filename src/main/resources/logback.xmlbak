@@ -33,7 +33,7 @@
             <fileNamePattern>D:/logs/portal-eng/error.%d.log</fileNamePattern>
         </rollingPolicy>
     </appender>
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="consoleLog" />
         <appender-ref ref="fileInfoLog" />
         <appender-ref ref="fileErrorLog" />

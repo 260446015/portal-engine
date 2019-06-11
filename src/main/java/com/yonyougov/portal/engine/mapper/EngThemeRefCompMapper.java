@@ -28,4 +28,6 @@ public interface EngThemeRefCompMapper {
     int batchInsert(@Param("list") List<EngThemeRefComp> list);
 
     List<EngThemeRefComp> selectByThemeId(String id);
+
+    int deleteByThemeId(String id);
 }

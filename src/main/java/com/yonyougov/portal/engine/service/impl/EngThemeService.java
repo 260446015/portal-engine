@@ -97,7 +97,7 @@ public class EngThemeService {
     private EngThemeRefUser saveThemeRefUser(String themeId, String userId) {
         List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByUserId(userId);
         engThemeRefUserList.forEach(engThemeRefUser -> engThemeRefUser.setActive("N"));
-        if(engThemeRefUserList.size() != 0) engThemeRefUserMapper.updateBatch(engThemeRefUserList);
+        if (engThemeRefUserList.size() != 0) engThemeRefUserMapper.updateBatch(engThemeRefUserList);
         EngThemeRefUser engThemeRefUser = new EngThemeRefUser();
         engThemeRefUser.setThemeId(themeId).setUserId(userId).setActive("Y");
         engThemeRefUserMapper.insert(engThemeRefUser);
@@ -132,7 +132,7 @@ public class EngThemeService {
         List<EngComp> themeRefCompsFromDb = engCompMapper.getThemeRefCompsFromDb(compIds);
         Elements elementsByTag = container.getElementsByTag(MsgConstant.COMP_ID);
         elementsByTag.forEach(element -> engThemeRefCompUsers.forEach(engThemeRefCompUser -> {
-            if(null != element.parent()){
+            if (null != element.parent()) {
                 if (element.parent().id().equalsIgnoreCase(engThemeRefCompUser.getParentId())) {
                     EngComp engComp = themeRefCompsFromDb.stream().filter(p -> p.getId()
                             .equalsIgnoreCase(engThemeRefCompUser.getCompId())).findFirst().get();
@@ -180,5 +180,25 @@ public class EngThemeService {
 
             });
         });
+    }
+
+    @Transactional
+    public void updateToBackstage(String id, EngTheme record) {
+        EngTheme engTheme = engThemeMapper.selectByPrimaryKey(id);
+        Document html = Jsoup.parse(record.getTemplate());
+        //去除所有模板标识，并用占位符替换，返回出所有的模板
+        List<JSONObject> jsonObjects = PageUtil.removeTemplatesReplaceAndReturnTemplates(html);
+        //存储用户主题
+        engTheme.setTemplate(html.outerHtml());
+        engThemeMapper.updateByPrimaryKeyWithBLOBs(engTheme);
+        //删除掉之前关联的comp
+        deleteEngThemeRefComp(id);
+        //存储用户与主题之间的对应关系表
+        saveEngThemeRefComp(id, jsonObjects);
+
+    }
+
+    private int deleteEngThemeRefComp(String id) {
+        return engThemeRefCompMapper.deleteByThemeId(id);
     }
 }
