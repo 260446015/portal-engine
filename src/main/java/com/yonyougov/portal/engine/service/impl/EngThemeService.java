@@ -39,7 +39,9 @@ public class EngThemeService {
     @Resource
     private EngThemeRefCompMapper engThemeRefCompMapper;
 
+    @Transactional
     public int deleteByPrimaryKey(String id) {
+        engThemeRefCompMapper.deleteByThemeId(id);
         return engThemeMapper.deleteByPrimaryKey(id);
     }
 
