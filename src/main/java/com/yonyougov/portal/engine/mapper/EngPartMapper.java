@@ -2,6 +2,8 @@ package com.yonyougov.portal.engine.mapper;
 
 import com.yonyougov.portal.engine.entity.EngPart;
 
+import java.util.List;
+
 /**
   *  @author yindwe@yonyu.com
   *  @Date 2019/5/5 9:28
@@ -21,4 +23,6 @@ public interface EngPartMapper {
     int updateByPrimaryKeyWithBLOBs(EngPart record);
 
     int updateByPrimaryKey(EngPart record);
+
+    List<EngPart> listAll();
 }

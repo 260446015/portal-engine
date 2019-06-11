@@ -174,4 +174,9 @@
       CATEGORY = #{category,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="listAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from ENG_PART
+    order by TS desc
+  </select>
 </mapper>

@@ -4,6 +4,7 @@ import com.yonyougov.portal.engine.entity.EngPart;
 import com.yonyougov.portal.engine.mapper.EngPartMapper;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
   *  @author yindwe@yonyu.com
@@ -44,4 +45,7 @@ public class EngPartService{
         return engPartMapper.updateByPrimaryKey(record);
     }
 
+    public List<EngPart> listAll() {
+        return engPartMapper.listAll();
+    }
 }
