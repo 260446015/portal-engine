@@ -1,7 +1,7 @@
 spring:
   druid:
-    url: jdbc:oracle:thin:@localhost:1521:eng
-    username: yindawei
+    url: jdbc:oracle:thin:@192.168.50.110:1521:orcl
+    username: engadmin
     password: 123456
   jpa:
     database: ORACLE
