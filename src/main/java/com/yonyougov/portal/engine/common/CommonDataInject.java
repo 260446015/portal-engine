@@ -21,11 +21,11 @@ import java.util.Calendar;
 @Slf4j
 public class CommonDataInject {
 
-    @Pointcut("execution(* com.yonyougov.eng.mapper.*Mapper.insert*(..))")
+    @Pointcut("execution(* com.yonyougov.portal.engine.mapper.*Mapper.insert*(..))")
     private void insertCutMethod() {
     }
 
-    @Pointcut("execution(* com.yonyougov.eng.mapper.*Mapper.update*(..))")
+    @Pointcut("execution(* com.yonyougov.portal.engine.mapper.*Mapper.update*(..))")
     private void updateCutMethod() {
     }
 

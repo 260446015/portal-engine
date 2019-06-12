@@ -30,7 +30,7 @@ public class EngThemeRefComp implements Serializable {
      * 组件id
      */
     @ApiModelProperty(value = "组件id")
-    private String compId;
+    private String compid;
 
     /**
      * 父类id

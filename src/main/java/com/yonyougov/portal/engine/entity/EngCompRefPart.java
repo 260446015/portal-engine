@@ -25,7 +25,7 @@ public class EngCompRefPart implements Serializable {
      * 组件表id
      */
     @ApiModelProperty(value = "组件表id")
-    private String compId;
+    private String compid;
 
     /**
      * 基础组件表id

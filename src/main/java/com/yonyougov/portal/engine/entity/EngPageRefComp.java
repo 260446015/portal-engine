@@ -29,7 +29,7 @@ public class EngPageRefComp implements Serializable {
      * 关联component表主键
      */
     @ApiModelProperty(value = "关联component表主键")
-    private String compId;
+    private String compid;
 
     /**
      * 接口调用地址（优先级高于组件）

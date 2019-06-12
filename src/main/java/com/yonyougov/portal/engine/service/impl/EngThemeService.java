@@ -50,7 +50,7 @@ public class EngThemeService {
         Document html = Jsoup.parse(record.getTemplate());
         //去除所有模板标识，并用占位符替换，返回出所有的模板
         List<JSONObject> jsonObjects = PageUtil.removeTemplatesReplaceAndReturnTemplates(html);
-        //存储用户主题
+        //存储主题
         record.setTemplate(html.outerHtml());
         String themeId = saveTheme(record);
         //存储用户与主题之间的对应关系表
@@ -71,8 +71,8 @@ public class EngThemeService {
         for (int i = 0; i < innerData.size(); i++) {
             JSONObject object = innerData.getJSONObject(i);
             EngThemeRefCompUser engThemeRefCompUser = new EngThemeRefCompUser();
-            engThemeRefCompUser.setThemeUserId(themeRefUserId).setCompId(object.getString(MsgConstant.COMP_ID))
-                    .setIcon("待定").setUrl("待定").setParentId(object.getString(MsgConstant.PARENT_ID));
+            engThemeRefCompUser.setThemeUserId(themeRefUserId).setCompid(object.getString(MsgConstant.COMP_ID))
+                    .setIcon("待定").setUrl("待定").setParentId(object.getString(MsgConstant.LAYOUTID));
             engThemeRefCompUserMapper.insert(engThemeRefCompUser);
         }
     }
@@ -82,7 +82,7 @@ public class EngThemeService {
             String parentId = p.getString(MsgConstant.LAYOUTID);
             Element element = (Element) p.get("comp");
             EngThemeRefComp engThemeRefComp = new EngThemeRefComp();
-            engThemeRefComp.setCompId(element.attr(MsgConstant.COMP_ID));
+            engThemeRefComp.setCompid(element.attr(MsgConstant.COMP_ID));
             engThemeRefComp.setThemeId(themeId);
             engThemeRefComp.setIcon("待定");
             engThemeRefComp.setParentId(parentId);
@@ -130,14 +130,14 @@ public class EngThemeService {
     private void getCurrentThemeWithCompsAndBuildTheme(String engThemeRefUserId, Document container) {
         List<Element> result = new ArrayList<>();
         List<EngThemeRefCompUser> engThemeRefCompUsers = engThemeRefCompUserMapper.selectByThemeUserId(engThemeRefUserId);
-        List<String> compIds = engThemeRefCompUsers.stream().map(EngThemeRefCompUser::getCompId).collect(Collectors.toList());
+        List<String> compIds = engThemeRefCompUsers.stream().map(EngThemeRefCompUser::getCompid).collect(Collectors.toList());
         List<EngComp> themeRefCompsFromDb = engCompMapper.getThemeRefCompsFromDb(compIds);
         Elements elementsByTag = container.getElementsByTag(MsgConstant.COMP_ID);
         elementsByTag.forEach(element -> engThemeRefCompUsers.forEach(engThemeRefCompUser -> {
             if (null != element.parent()) {
                 if (element.parent().id().equalsIgnoreCase(engThemeRefCompUser.getParentId())) {
                     EngComp engComp = themeRefCompsFromDb.stream().filter(p -> p.getId()
-                            .equalsIgnoreCase(engThemeRefCompUser.getCompId())).findFirst().get();
+                            .equalsIgnoreCase(engThemeRefCompUser.getCompid())).findFirst().get();
                     element.replaceWith(Jsoup.parse(engComp.getTemplate()).body());
                 }
             }
@@ -171,11 +171,11 @@ public class EngThemeService {
 
     private void getElementsByIdFromDbAndReplaceForBackstage(String id, Document container) {
         List<EngThemeRefComp> engThemeRefComps = engThemeRefCompMapper.selectByThemeId(id);
-        List<String> ids = engThemeRefComps.stream().map(EngThemeRefComp::getCompId).collect(Collectors.toList());
+        List<String> ids = engThemeRefComps.stream().map(EngThemeRefComp::getCompid).collect(Collectors.toList());
         List<EngComp> engComps = engCompMapper.getThemeRefCompsFromDb(ids);
         engThemeRefComps.forEach(engThemeRefComp -> {
             engComps.forEach(engComp -> {
-                if (engThemeRefComp.getCompId().equalsIgnoreCase(engComp.getId())) {
+                if (engThemeRefComp.getCompid().equalsIgnoreCase(engComp.getId())) {
                     Element parent = container.getElementById(engThemeRefComp.getParentId());
                     parent.html(engComp.getTemplate());
                 }

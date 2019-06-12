@@ -8,7 +8,7 @@
     -->
     <id column="ID" jdbcType="VARCHAR" property="id" />
     <result column="PAGE_ID" jdbcType="VARCHAR" property="pageId" />
-    <result column="COMP_ID" jdbcType="VARCHAR" property="compId" />
+    <result column="COMP_ID" jdbcType="VARCHAR" property="compid" />
     <result column="URL" jdbcType="VARCHAR" property="url" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -43,7 +43,7 @@
     -->
     insert into ENG_PAGE_REF_COMP (ID, PAGE_ID, COMP_ID, 
       URL)
-    values (#{id,jdbcType=VARCHAR}, #{pageId,jdbcType=VARCHAR}, #{compId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{pageId,jdbcType=VARCHAR}, #{compid,jdbcType=VARCHAR},
       #{url,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yonyougov.portal.engine.entity.EngPageRefComp">
@@ -59,7 +59,7 @@
       <if test="pageId != null">
         PAGE_ID,
       </if>
-      <if test="compId != null">
+      <if test="compid != null">
         COMP_ID,
       </if>
       <if test="url != null">
@@ -73,8 +73,8 @@
       <if test="pageId != null">
         #{pageId,jdbcType=VARCHAR},
       </if>
-      <if test="compId != null">
-        #{compId,jdbcType=VARCHAR},
+      <if test="compid != null">
+        #{compid,jdbcType=VARCHAR},
       </if>
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
@@ -91,8 +91,8 @@
       <if test="pageId != null">
         PAGE_ID = #{pageId,jdbcType=VARCHAR},
       </if>
-      <if test="compId != null">
-        COMP_ID = #{compId,jdbcType=VARCHAR},
+      <if test="compid != null">
+        COMP_ID = #{compid,jdbcType=VARCHAR},
       </if>
       <if test="url != null">
         URL = #{url,jdbcType=VARCHAR},
@@ -107,7 +107,7 @@
     -->
     update ENG_PAGE_REF_COMP
     set PAGE_ID = #{pageId,jdbcType=VARCHAR},
-      COMP_ID = #{compId,jdbcType=VARCHAR},
+      COMP_ID = #{compid,jdbcType=VARCHAR},
       URL = #{url,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -125,7 +125,7 @@
       </trim>
       <trim prefix="COMP_ID = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
-          when ID = #{item.id,jdbcType=VARCHAR} then #{item.compId,jdbcType=VARCHAR}
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.compid,jdbcType=VARCHAR}
         </foreach>
       </trim>
       <trim prefix="URL = case" suffix="end,">
@@ -148,7 +148,7 @@
     (ID, PAGE_ID, COMP_ID, URL)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.id,jdbcType=VARCHAR}, #{item.pageId,jdbcType=VARCHAR}, #{item.compId,jdbcType=VARCHAR}, 
+      (#{item.id,jdbcType=VARCHAR}, #{item.pageId,jdbcType=VARCHAR}, #{item.compid,jdbcType=VARCHAR},
         #{item.url,jdbcType=VARCHAR})
     </foreach>
   </insert>
