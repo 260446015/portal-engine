@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="/jquery/jquery.min.js"></script>
+<body>
+<div class="magnet br portletHeight portlet magnetId" data-interface ="" data-limit="5" data-portletId ="magnet">
+    <div class="magnet_con portletContent">
+        <div class="magnet">
+            <a href="#" class="firstLine"><i class="iconfont iconzhibiaochi"></i><span class="icon_text">指标池</span></a>
+            <a href="#" class="totalMoney">总金额：<span class="totalMoney_text">12345.56</span> 亿元</a>
+            <a href="#" class="availableMoney">可用金额：</i><span class="availableMoney_text">{availableMoney_text}</span> 亿元</a>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="box box-element ui-draggable formId">
+    <a href="javascript:void(0);"   class=" editPortlet drag label label-default editInter">
+        <i class=" glyphicon glyphicon-cog"></i>
+        编辑
+    </a>
+    <a href="javascript:void(0);" class="remove label label-danger">
+        <i class="glyphicon glyphicon-remove"></i>
+        删除
+    </a>
+    <span class="drag label label-default">
+                                <i class="glyphicon glyphicon-move"></i>
+                                拖动
+                            </span>
+
+    <div class="preview">表格</div>
+    <div class="view ">
+        <div class="toTable br portletHeight portlet" data-interface ="" data-limit="5" data-portletId = "toTable" id="toTable">
+            <div class="head">
+                <span class="portletTitle">表格</span>
+
+            </div>
+            <div class="cententTable portletContent">
+                <table class="tableCon">
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="box box-element ui-draggable daibanId">
+    <a href="javascript:void(0);"   class=" editPortlet drag label label-default editInter">
+        <i class=" glyphicon glyphicon-cog"></i>
+        编辑
+    </a>
+    <a href="javascript:void(0);" class="remove label label-danger">
+        <i class="glyphicon glyphicon-remove"></i>
+        删除
+    </a>
+    <span class="drag label label-default">
+								<i class="glyphicon glyphicon-move"></i>
+								拖动
+							</span>
+
+    <div class="preview">待办事项</div>
+    <div class="view ">
+        <div class="toDoList br portletHeight portlet" data-interface ="" data-limit="5" data-portletId = "toDoList" id="toDoList">
+            <div class="head">
+                <span class="portletTitle">待办事项</span>
+                <div id="toDoListmore">
+                    <!--<img src="images/layoutManager/more.png"/>-->
+                    <a href="#">
+                        <span>更多</span>
+                    </a>
+                </div>
+            </div>
+            <div class="centent portletContent">
+                <ul id="list">
+                    <li><span class="icon-r"></span><a href="#">预算调整负责人审核</a><span class="count">12</span></li>
+                    <li><span class="icon-r"></span><a href="#">明细调整负责人审核</a><span class="count">9</span></li>
+                    <li><span class="icon-r"></span><a href="#">用款计划申请签名</a><span class="count">15</span></li>
+                    <li><span class="icon-r"></span><a href="#">授权支付申请签名</a><span class="count">13</span></li>
+                    <li><span class="icon-r"></span><a href="#">财政审批事项审核</a><span class="count">14</span></li>
+                    <li><span class="icon-r"></span><a href="#">直接支付申请签名</a><span class="count">15</span></li>
+                    <li><span class="icon-r"></span><a href="#">工资统发申请审核</a><span class="count">13</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="box box-element ui-draggable announcementId">
+    <a href="javascript:void(0);"   class=" editPortlet drag label label-default editInter">
+        <i class=" glyphicon glyphicon-cog"></i>
+        编辑
+    </a>
+    <a href="javascript:void(0);" class="remove label label-danger">
+        <i class="glyphicon glyphicon-remove"></i>
+        删除
+    </a>
+    <span class="drag label label-default">
+								<i class="glyphicon glyphicon-move"></i>
+								拖动
+							</span>
+    <div class="preview">通知公告</div>
+    <div class="view"  >
+        <div class="notice br portletHeight portlet" data-interface ="" data-limit="5"  data-portletId = "article" id="article">
+            <div class="head">
+                <span class="portletTitle">通知公告</span>
+                <div id="notice-more">
+                    <img src="images/layoutManager/more.png"/>
+                    <a href="#">
+                        <span>更多</span>
+                    </a>
+                </div>
+            </div>
+            <div class="centent portletContent">
+                <ul id="notice-list">
+                    <li><span class="icon-r"></span><a href="#"><span class="office">上海市财政局</span><span class="detail">上海市全市及本市级2017年决算情况</span></a><span class="time">2018-1-12</span></li>
+                    <!--<li><span class="icon-r"></span><a href="#"><span class="office">上海市财政局</span><span class="detail">上海市全市及本市级2017年决算情况</span></a><span class="time">2018-1-12</span></li>-->
+                    <!--<li><span class="icon-r"></span><a href="#"><span class="office">上海市财政局</span><span class="detail">上海市全市及本市级2017年决算情况</span></a><span class="time">2018-1-12</span></li>-->
+                    <!--<li><span class="icon-r"></span><a href="#"><span class="office">信息管理处</span><span class="detail">上海市全市及本市级2017年决算情况</span></a><span class="time">2018-1-13</span></li>-->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="box box-element ui-draggable jobNoticeId">
+    <a href="javascript:void(0);"   class=" editPortlet drag label label-default editInter">
+        <i class=" glyphicon glyphicon-cog"></i>
+        编辑
+    </a>
+    <a href="javascript:void(0);" class="remove label label-danger">
+        <i class="glyphicon glyphicon-remove"></i>
+        删除
+    </a>
+    <span class="drag label label-default">
+                                <i class="glyphicon glyphicon-move"></i>
+                                拖动
+                            </span>
+    <div class="preview">工作通知</div>
+    <div class="view" >
+        <div class=" article2 br portletHeight portlet" data-interface ="" data-limit="5" data-portletId ="article2" id="article2">
+            <div class="head ">
+                <span class="portletTitle">工作通知</span>
+            </div>
+            <div class="notice_hnp portletContent">
+                <ul  class="list">
+                    <!-- <li><span class="icon_hn"></span><a href="#">预算调整负责人审核预算调整负责人审核预算调整负责人审核预算调整负责人审核预算调整负责人审核预算调整负责人审核预算调整负责人审核</a></li> -->
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="box box-element ui-draggable newsId">
+    <a href="javascript:void(0);"   class=" editPortlet drag label label-default editInter">
+        <i class=" glyphicon glyphicon-cog"></i>
+        编辑
+    </a>
+    <a href="javascript:void(0);" class="remove label label-danger">
+        <i class="glyphicon glyphicon-remove"></i>
+        删除
+    </a>
+    <span class="drag label label-default">
+                                <i class="glyphicon glyphicon-move"></i>
+                                拖动
+                            </span>
+    <div class="preview">新闻动态</div>
+    <div class="view" >
+        <div class="loopNew br portletHeight portlet" data-interface ="" data-limit="5" data-portletId ="loopNew" id="loopNew">
+            <div class="head">
+                <span class="portletTitle">新闻动态</span>
+            </div>
+            <div class="new_hnp portletContent">
+                <div class="lubo">
+                    <!--轮播图-->
+                    <ul class="lubo_box">
+                        <li style="opacity: 1;filter:alpha(opacity=100)">
+                            <a href="#" >
+                                <img src="images/layoutManager/1.jpg" />
+                            </a>
+                        </li>
+                        <li style="opacity: 0;filter:alpha(opacity=0)">
+                            <a href="#" >
+                                <img src="images/layoutManager/2.jpg" />
+                            </a>
+                        </li>
+                        <li style="opacity: 0;filter:alpha(opacity=0)">
+                            <a href="#">
+                                <img src="images/layoutManager/3.jpg" />
+                            </a>
+                        </li>
+                        <li style="opacity: 0;filter:alpha(opacity=0)">
+                            <a href="#" >
+                                <img src="images/layoutManager/4.jpg" />
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="cir_box">
+                        <li value="0">0</li>
+                        <li value="1">1</li>
+                        <li value="2">2</li>
+                        <li value="3">3</li>
+
+                    </ul>
+                </div>
+                <ul id="new_hnlist" class="list list_r">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="box box-element ui-draggable reportId">
+    <a href="javascript:void(0);"   class=" editPortlet drag label label-default editInter">
+        <i class=" glyphicon glyphicon-cog"></i>
+        编辑
+    </a>
+    <a href="javascript:void(0);" class="remove label label-danger">
+        <i class="glyphicon glyphicon-remove"></i>
+        删除
+    </a>
+    <span class="drag label label-default">
+                                <i class="glyphicon glyphicon-move"></i>
+                                拖动
+                            </span>
+    <div class="preview">报表</div>
+    <div class="view" >
+        <div class="baobiao br portletHeight portlet" data-interface ="" data-limit="5" data-portletId ="baobiao" id="baobiao">
+            <div class="head ">
+                <span class="portletTitle">报表</span>
+            </div>
+            <div class="baobiao_con portletContent">
+
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="box box-element ui-draggable wyblId">
+    <a href="javascript:void(0);"   class=" editPortlet drag label label-default editInter">
+        <i class=" glyphicon glyphicon-cog"></i>
+        编辑
+    </a>
+    <a href="javascript:void(0);" class="remove label label-danger">
+        <i class="glyphicon glyphicon-remove"></i>
+        删除
+    </a>
+    <span class="drag label label-default">
+                                <i class="glyphicon glyphicon-move"></i>
+                                拖动
+                            </span>
+    <div class="preview">我要办理</div>
+    <div class="view" >
+        <div class="myUsea  portletHeight portlet" data-interface ="" data-limit="" data-portletId ="myUsea" id="myUsea">
+            <!-- <div class="head ">
+                <span class="portletTitle">我要办理</span>
+            </div> -->
+            <div class="myUse_con portletContent">
+                <div class="menuPart">
+                    <div class="hid picbox" id="myUse" style="position: relative;">
+                        <a href="javascript:void(0)">
+                            <img src="images/index/banli_icon.png" class="bg-icon" style="width:40px;height:40px">
+                            <span class="menu_text">我要办理</span>
+                            <span class="menu_img">办</span>
+                        </a>
+                    </div>
+                    <div class="hid picbox" id="mySearch" style="position: relative;">
+                        <a href="javascript:void(0)">
+                            <img src="images/index/danju_icon.png" class="bg-icon"style="width:52px;height:40px">
+                            <span class="menu_text">我的单据</span>
+                            <span class="menu_img">单</span>
+                        </a>
+                    </div>
+                    <div class="hid picbox" id="myAsk" style="position: relative;">
+                        <a href="javascript:void(0)">
+                            <img src="images/index/chaxun_icon.png" class="bg-icon" style="width:40px;height:40px">
+                            <span class="menu_text">我的查询</span>
+                            <span class="menu_img">查</span>
+                        </a>
+                    </div>
+                    <div class="hid picbox" id="myTable" style="position: relative;">
+                        <a href="javascript:void(0)">
+                            <img src="images/index/baobiao_icon.png" class="bg-icon" style="width:40px;height:40px">
+                            <span class="menu_text">常用报表</span>
+                            <span class="menu_img">表</span>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<hr/>
+<button id="magnet">增加磁贴</button>
+<button id="form">增加表格</button>
+<button id="daiban">增加待办事项</button>
+<button id="announcement">增加通知公告</button>
+<button id="jobNotice">增加工作通知</button>
+<button id="news">增加新闻动态</button>
+<button id="report">增加报表</button>
+<button id="wybl">增加我要办理</button>
+</body>
+<script>
+    $("#magnet").click(function () {
+        var html = $(".magnetId").prop('outerHTML');
+        var req = {'template':html,'templateName':'磁贴','name':'磁贴01'};
+        $.ajax({
+            url:"/apis/engComp",
+            type:'post',
+            data:JSON.stringify(req),
+            contentType:'application/json',
+            success:function (res) {
+
+            }
+        })
+    })
+    $("#form").click(function () {
+        var html = $(".formId").prop('outerHTML');
+        var req = {'template':html,'templateName':'表格','name':'表格01'};
+        $.ajax({
+            url:"/apis/engComp",
+            type:'post',
+            data:JSON.stringify(req),
+            contentType:'application/json',
+            success:function (res) {
+
+            }
+        })
+    })
+    $("#daiban").click(function () {
+        var html = $(".daibanId").prop('outerHTML');
+        var req = {'template':html,'templateName':'待办事项','name':'待办事项01'};
+        $.ajax({
+            url:"/apis/engComp",
+            type:'post',
+            data:JSON.stringify(req),
+            contentType:'application/json',
+            success:function (res) {
+
+            }
+        })
+    })
+    $("#announcement").click(function () {
+        var html = $(".announcementId").prop('outerHTML');
+        var req = {'template':html,'templateName':'通知公告','name':'通知公告01'};
+        $.ajax({
+            url:"/apis/engComp",
+            type:'post',
+            data:JSON.stringify(req),
+            contentType:'application/json',
+            success:function (res) {
+
+            }
+        })
+    })
+    $("#jobNotice").click(function () {
+        var html = $(".jobNoticeId").prop('outerHTML');
+        var req = {'template':html,'templateName':'工作通知','name':'工作通知01'};
+        $.ajax({
+            url:"/apis/engComp",
+            type:'post',
+            data:JSON.stringify(req),
+            contentType:'application/json',
+            success:function (res) {
+
+            }
+        })
+    })
+    $("#news").click(function () {
+        var html = $(".newsId").prop('outerHTML');
+        var req = {'template':html,'templateName':'新闻动态','name':'新闻动态01'};
+        $.ajax({
+            url:"/apis/engComp",
+            type:'post',
+            data:JSON.stringify(req),
+            contentType:'application/json',
+            success:function (res) {
+
+            }
+        })
+    })
+    $("#report").click(function () {
+        var html = $(".reportId").prop('outerHTML');
+        var req = {'template':html,'templateName':'报表','name':'报表01'};
+        $.ajax({
+            url:"/apis/engComp",
+            type:'post',
+            data:JSON.stringify(req),
+            contentType:'application/json',
+            success:function (res) {
+
+            }
+        })
+    })
+    $("#wybl").click(function () {
+        var html = $(".wyblId").prop('outerHTML');
+        var req = {'template':html,'templateName':'我要办理','name':'我要办理01'};
+        $.ajax({
+            url:"/apis/engComp",
+            type:'post',
+            data:JSON.stringify(req),
+            contentType:'application/json',
+            success:function (res) {
+
+            }
+        })
+    })
+</script>
+</html>
