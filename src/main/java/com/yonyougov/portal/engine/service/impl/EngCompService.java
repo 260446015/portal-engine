@@ -29,10 +29,15 @@ public class EngCompService {
     @Transactional
     public int insert(EngComp record) {
         engCompMapper.insert(record);
-        Document parse = Jsoup.parse(record.getTemplate());
-        Element portlet = parse.getElementsByClass("portlet").get(0);
+        Document template = Jsoup.parse(record.getTemplate());
+        Document templateFull = Jsoup.parse(record.getTemplateFull());
+        Element portlet = template.getElementsByClass("portlet").get(0);
         portlet.attr("compid", record.getId());
+        Element view = templateFull.getElementsByClass("view").get(0);
+        view.html(portlet.outerHtml());
+        Element portletFull = templateFull.getElementsByClass("portletFull").get(0);
         record.setTemplate(portlet.outerHtml());
+        record.setTemplateFull(portletFull.outerHtml());
         return engCompMapper.updateByPrimaryKeyWithBLOBs(record);
     }
 
@@ -68,6 +73,9 @@ public class EngCompService {
         return engCompMapper.batchInsert(list);
     }
 }
+
+
+
 
 
 

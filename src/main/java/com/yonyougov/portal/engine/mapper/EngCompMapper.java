@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author yindwe@yonyu.com
- * @Date 2019/5/7 16:39
+ * @Author yindwe@yonyou.com
+ * @Date 2019/6/14
  * @Description
  */
 public interface EngCompMapper {
@@ -21,13 +21,13 @@ public interface EngCompMapper {
 
     int updateByPrimaryKeySelective(EngComp record);
 
-    int updateByPrimaryKeyWithBLOBs(EngComp record);
-
     int updateByPrimaryKey(EngComp record);
 
     int updateBatch(List<EngComp> list);
 
     int batchInsert(@Param("list") List<EngComp> list);
+
+    int updateByPrimaryKeyWithBLOBs(EngComp record);
 
     List<EngComp> listAll();
 

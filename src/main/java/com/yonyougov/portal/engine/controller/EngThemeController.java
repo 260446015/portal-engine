@@ -9,8 +9,7 @@ import com.yonyougov.portal.engine.service.impl.EngThemeService;
 import com.yonyougov.portal.engine.util.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,7 +97,7 @@ public class EngThemeController extends BaseController {
     @ApiOperation(value = "按id查询主题列表")
     @GetMapping("/backstage/{id}")
     public ApiResult listForBackstage(@PathVariable String id) {
-        Document document;
+        Element document;
         try {
             document = engThemeService.selectByPrimaryKeyForBackstage(id);
         } catch (Exception e) {
@@ -110,7 +109,7 @@ public class EngThemeController extends BaseController {
     @ApiOperation(value = "按id查询主题列表")
     @GetMapping("/front")
     public void listForFront(HttpServletResponse response) {
-        Document document;
+        Element document;
         try {
             User currentUser = UserUtil.getCurrentUser();
             document = engThemeService.selectByPrimaryKeyForFront(currentUser.getId());

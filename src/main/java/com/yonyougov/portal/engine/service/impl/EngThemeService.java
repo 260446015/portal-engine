@@ -7,6 +7,7 @@ import com.yonyougov.portal.engine.dto.EngThemeDTO;
 import com.yonyougov.portal.engine.util.PageUtil;
 import com.yonyougov.portal.engine.entity.*;
 import com.yonyougov.portal.engine.mapper.*;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
  * @Description
  */
 @Service
+@Slf4j
 public class EngThemeService {
 
     @Resource
@@ -47,11 +49,13 @@ public class EngThemeService {
 
     @Transactional(rollbackFor = Exception.class)
     public void insertToBackstage(EngTheme record) {
+        log.info(record.toString());
         Document html = Jsoup.parse(record.getTemplate());
         //去除所有模板标识，并用占位符替换，返回出所有的模板
         List<JSONObject> jsonObjects = PageUtil.removeTemplatesReplaceAndReturnTemplates(html);
         //存储主题
-        record.setTemplate(html.outerHtml());
+        Element container = html.getElementsByClass("container").get(0);
+        record.setTemplate(container.outerHtml());
         String themeId = saveTheme(record);
         //存储用户与主题之间的对应关系表
         saveEngThemeRefComp(themeId, jsonObjects);
@@ -110,7 +114,7 @@ public class EngThemeService {
         return engThemeMapper.insertSelective(record);
     }
 
-    public Document selectByPrimaryKeyForFront(String userId) {
+    public Element selectByPrimaryKeyForFront(String userId) {
         //获取ENG_THEME_REF_USER表中用户启用的主题(查询T的时候数据库必定只有一条)
         List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByUserIdAndActive(userId, "Y");
         if (engThemeRefUserList.size() == 0) { //TODO 当用户没有存储过主题时进行处理
@@ -160,28 +164,26 @@ public class EngThemeService {
         return engThemeMapper.listAll();
     }
 
-    public Document selectByPrimaryKeyForBackstage(String id) {
+    public Element selectByPrimaryKeyForBackstage(String id) {
         EngTheme engTheme = engThemeMapper.selectByPrimaryKey(id);
         Assert.notNull(engTheme, MsgConstant.DATA_NOT_FOUNT);
-        Document container = Jsoup.parse(engTheme.getTemplate());
+        Document document = Jsoup.parse(engTheme.getTemplate());
+        Element container = document.getElementsByClass("container").get(0);
         //从数据库中取出与之对应的组件并替换相应的组件
         getElementsByIdFromDbAndReplaceForBackstage(id, container);
-        return container;
+        return container.child(0);
     }
 
-    private void getElementsByIdFromDbAndReplaceForBackstage(String id, Document container) {
+    private void getElementsByIdFromDbAndReplaceForBackstage(String id, Element container) {
         List<EngThemeRefComp> engThemeRefComps = engThemeRefCompMapper.selectByThemeId(id);
         List<String> ids = engThemeRefComps.stream().map(EngThemeRefComp::getCompid).collect(Collectors.toList());
         List<EngComp> engComps = engCompMapper.getThemeRefCompsFromDb(ids);
-        engThemeRefComps.forEach(engThemeRefComp -> {
-            engComps.forEach(engComp -> {
-                if (engThemeRefComp.getCompid().equalsIgnoreCase(engComp.getId())) {
-                    Element parent = container.getElementById(engThemeRefComp.getParentId());
-                    parent.html(engComp.getTemplate());
-                }
-
-            });
-        });
+        engThemeRefComps.forEach(engThemeRefComp -> engComps.forEach(engComp -> {
+            if (engThemeRefComp.getCompid().equalsIgnoreCase(engComp.getId())) {
+                Element parent = container.getElementById(engThemeRefComp.getParentId());
+                parent.html(engComp.getTemplateFull());
+            }
+        }));
     }
 
     @Transactional
