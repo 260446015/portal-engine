@@ -1,7 +1,5 @@
 package com.yonyougov.portal.engine.controller;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.yonyougov.portal.engine.common.MsgConstant;
 import com.yonyougov.portal.engine.dto.ApiResult;
 import com.yonyougov.portal.engine.dto.EngThemeDTO;
@@ -11,6 +9,7 @@ import com.yonyougov.portal.engine.service.impl.EngThemeService;
 import com.yonyougov.portal.engine.util.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * @author yindwe@yonyu.com
@@ -85,30 +85,26 @@ public class EngThemeController extends BaseController {
 
     @ApiOperation(value = "查询主题列表")
     @GetMapping
-    public ApiResult list(int pageNum) {
-        Page<EngTheme> page;
+    public ApiResult list() {
+        List<EngTheme> engThemes;
         try {
-            page = PageHelper.startPage(pageNum, MsgConstant.PAGE_SIZE, true);
-            engThemeService.listAll();
+            engThemes = engThemeService.listAll();
         } catch (Exception e) {
             return error(e.getMessage());
         }
-        return successPages(page);
+        return success(engThemes);
     }
 
     @ApiOperation(value = "按id查询主题列表")
     @GetMapping("/backstage/{id}")
-    public void listForBackstage(@PathVariable String id, HttpServletResponse response) {
+    public ApiResult listForBackstage(@PathVariable String id) {
         Document document;
         try {
             document = engThemeService.selectByPrimaryKeyForBackstage(id);
-//            response.setCharacterEncoding("gbk");
-            PrintWriter pw = response.getWriter();
-            pw.println(document.outerHtml());
         } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return error(e.getMessage());
         }
-//        return ResponseEntity.ok().body(engTheme);
+        return success(document.outerHtml());
     }
 
     @ApiOperation(value = "按id查询主题列表")

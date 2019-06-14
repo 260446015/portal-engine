@@ -20,4 +20,4 @@ logging:
         portal:
           engine:
             mapper: debug
-    org: debug
+    org: info

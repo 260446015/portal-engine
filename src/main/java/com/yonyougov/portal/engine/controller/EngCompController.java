@@ -1,7 +1,5 @@
 package com.yonyougov.portal.engine.controller;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.yonyougov.portal.engine.common.MsgConstant;
 import com.yonyougov.portal.engine.dto.ApiResult;
 import com.yonyougov.portal.engine.entity.EngComp;
@@ -11,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author yindwe@yonyu.com
@@ -38,15 +37,14 @@ public class EngCompController extends BaseController{
 
     @GetMapping
     @ApiOperation(value = "查询页面组件")
-    public ApiResult list(int pageNum) {
-        Page<EngComp> page;
+    public ApiResult list() {
+        List<EngComp> result;
         try {
-            page = PageHelper.startPage(pageNum, MsgConstant.PAGE_SIZE, true);
-            engCompService.listAll();
+            result = engCompService.listAll();
         } catch (Exception e) {
             return error(e.getMessage());
          }
-        return successPages(page);
+        return success(result);
     }
 
     @GetMapping("{id}")

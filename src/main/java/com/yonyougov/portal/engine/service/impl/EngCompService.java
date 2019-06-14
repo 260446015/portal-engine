@@ -2,8 +2,10 @@ package com.yonyougov.portal.engine.service.impl;
 
 import com.yonyougov.portal.engine.entity.EngComp;
 import com.yonyougov.portal.engine.mapper.EngCompMapper;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -24,9 +26,14 @@ public class EngCompService {
         return engCompMapper.deleteByPrimaryKey(id);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public int insert(EngComp record) {
-        return engCompMapper.insert(record);
+        engCompMapper.insert(record);
+        Document parse = Jsoup.parse(record.getTemplate());
+        Element portlet = parse.getElementsByClass("portlet").get(0);
+        portlet.attr("compid", record.getId());
+        record.setTemplate(portlet.outerHtml());
+        return engCompMapper.updateByPrimaryKeyWithBLOBs(record);
     }
 
     public int insertSelective(EngComp record) {
