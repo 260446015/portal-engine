@@ -9,13 +9,11 @@ import com.yonyougov.portal.engine.service.impl.EngThemeService;
 import com.yonyougov.portal.engine.util.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -37,20 +35,7 @@ public class EngThemeController extends BaseController {
         try {
             Assert.notNull(engTheme.getName(), "名称不能为空");
             Assert.notNull(engTheme.getTemplate(), "模板内容不能为空");
-            engThemeService.insertToBackstage(engTheme);
-        } catch (Exception e) {
-            return error(e.getMessage());
-        }
-        return success(MsgConstant.OPERATION_SUCCESS);
-    }
-
-    @ApiOperation(value = "后台管理员修改主题")
-    @PatchMapping("backstage/{id}")
-    public ApiResult updateForBackstage(@PathVariable String id, @RequestBody EngTheme engTheme) {
-        try {
-            Assert.notNull(engTheme.getName(), "名称不能为空");
-            Assert.notNull(engTheme.getTemplate(), "模板内容不能为空");
-            engThemeService.updateToBackstage(id, engTheme);
+            engThemeService.saveOrUpdateToBackstage(engTheme);
         } catch (Exception e) {
             return error(e.getMessage());
         }
@@ -97,7 +82,7 @@ public class EngThemeController extends BaseController {
     @ApiOperation(value = "按id查询主题列表")
     @GetMapping("/backstage/{id}")
     public ApiResult listForBackstage(@PathVariable String id) {
-        Element document;
+        Elements document;
         try {
             document = engThemeService.selectByPrimaryKeyForBackstage(id);
         } catch (Exception e) {
@@ -106,16 +91,16 @@ public class EngThemeController extends BaseController {
         return success(document.outerHtml());
     }
 
-    @ApiOperation(value = "按id查询主题列表")
+    @ApiOperation(value = "查询当前用户主题")
     @GetMapping("/front")
-    public void listForFront(HttpServletResponse response) {
-        Element document;
+    public ApiResult listForFront() {
+        Elements document;
         try {
             User currentUser = UserUtil.getCurrentUser();
-            document = engThemeService.selectByPrimaryKeyForFront(currentUser.getId());
-            PrintWriter pw = response.getWriter();
-            pw.println(document.outerHtml());
+            document = engThemeService.selectByUserIdForFront(currentUser.getId());
         } catch (Exception e) {
+            return error(e.getMessage());
         }
+        return success(document.outerHtml());
     }
 }

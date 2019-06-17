@@ -14,4 +14,7 @@ public class MsgConstant {
     public static final String COMP_ID = "compid";
     public static final String THEME_ID = "themeid";
     public static final String LAYOUTID = "layoutid";
+    public static final String CONTAINER = "container";
+    public static final String LYROW = "lyrow";
+    public static final String PORTLET = "portlet";
 }

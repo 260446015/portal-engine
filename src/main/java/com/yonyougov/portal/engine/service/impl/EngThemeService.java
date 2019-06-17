@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yonyougov.portal.engine.common.MsgConstant;
 import com.yonyougov.portal.engine.dto.EngThemeDTO;
-import com.yonyougov.portal.engine.util.PageUtil;
 import com.yonyougov.portal.engine.entity.*;
 import com.yonyougov.portal.engine.mapper.*;
+import com.yonyougov.portal.engine.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,9 +15,9 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,18 +48,18 @@ public class EngThemeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void insertToBackstage(EngTheme record) {
-        log.info(record.toString());
-        Document html = Jsoup.parse(record.getTemplate());
-        Document editHtml = Jsoup.parse(record.getTemplateFull());
-        //去除所有模板标识，并用占位符替换，返回出所有的模板
-        List<JSONObject> jsonObjects = PageUtil.removeTemplatesReplaceAndReturnTemplates(html);
-        PageUtil.removeTemplatesReplaceAndReturnTemplates(editHtml);
-        //存储主题
-        Element container = html.getElementsByClass("container").get(0);
-        Element lyrow = editHtml.getElementsByClass("lyrow").get(0);
-        record.setTemplate(container.outerHtml());
-        record.setTemplateFull(lyrow.outerHtml());
+    public void saveOrUpdateToBackstage(EngTheme record) {
+        //判断传入的数据是否有id，如果有id则进行数据更新；如果没有，则是新增
+        if (StringUtils.isEmpty(record.getId())) {
+            saveToBackstage(record);
+        } else {
+            updateToBackstage(record);
+        }
+    }
+
+    private void saveToBackstage(EngTheme record) {
+        log.info("开始进行新增，新增数据为：{}", record.toString());
+        List<JSONObject> jsonObjects = genDataBaseTemplateHtml(record);
         String themeId = saveTheme(record);
         //存储用户与主题之间的对应关系表
         saveEngThemeRefComp(themeId, jsonObjects);
@@ -105,42 +105,66 @@ public class EngThemeService {
     }
 
     private EngThemeRefUser saveThemeRefUser(String themeId, String userId) {
+        EngThemeRefUser refUser = null;
         List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByUserId(userId);
-        engThemeRefUserList.forEach(engThemeRefUser -> engThemeRefUser.setActive("N"));
-        if (engThemeRefUserList.size() != 0) engThemeRefUserMapper.updateBatch(engThemeRefUserList);
-        EngThemeRefUser engThemeRefUser = new EngThemeRefUser();
-        engThemeRefUser.setThemeId(themeId).setUserId(userId).setActive("Y");
-        engThemeRefUserMapper.insert(engThemeRefUser);
-        return engThemeRefUser;
+        //先判断有没有保存过的关联信息
+        if (engThemeRefUserList.size() != 0) {
+            for (EngThemeRefUser engThemeRefUser : engThemeRefUserList) {
+                if (!engThemeRefUser.getThemeId().equals(themeId)) {
+                    engThemeRefUser.setActive("N");
+                } else {
+                    refUser = engThemeRefUser;
+                }
+            }
+            engThemeRefUserMapper.updateBatch(engThemeRefUserList);
+        }
+
+        if (refUser == null) {
+            refUser = new EngThemeRefUser();
+            refUser.setThemeId(themeId).setUserId(userId).setActive("Y");
+            engThemeRefUserMapper.insert(refUser);
+        }
+        return refUser;
     }
 
     public int insertSelective(EngTheme record) {
         return engThemeMapper.insertSelective(record);
     }
 
-    public Element selectByPrimaryKeyForFront(String userId) {
+    public Elements selectByUserIdForFront(String userId) {
         //获取ENG_THEME_REF_USER表中用户启用的主题(查询T的时候数据库必定只有一条)
         List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByUserIdAndActive(userId, "Y");
-        if (engThemeRefUserList.size() == 0) { //TODO 当用户没有存储过主题时进行处理
+        if (engThemeRefUserList.size() == 0) {
+
             EngTheme engTheme = engThemeMapper.selectByDefaultTheme("Y");
-            return selectByPrimaryKeyForBackstage(engTheme.getId());
+            return selectByPrimaryKeyForFront(engTheme.getId());
         }
         EngThemeRefUser engThemeRefUser = engThemeRefUserList.get(0);
         //获取当前用户使用的主题
         EngTheme engTheme = engThemeMapper.selectByPrimaryKey(engThemeRefUser.getThemeId());
-        Document container = Jsoup.parse(engTheme.getTemplate());
+        Document html = Jsoup.parse(engTheme.getTemplate());
+        Elements containers = html.getElementsByClass(MsgConstant.CONTAINER);
         String engThemeRefUserId = engThemeRefUser.getId();
         //获取当前用户当前主题下所有组件的信息并组装最后的页面
-        getCurrentThemeWithCompsAndBuildTheme(engThemeRefUserId, container);
-        return container;
+        getCurrentThemeWithCompsAndBuildTheme(engThemeRefUserId, containers);
+        return containers;
     }
 
-    private void getCurrentThemeWithCompsAndBuildTheme(String engThemeRefUserId, Document container) {
-        List<Element> result = new ArrayList<>();
+    private Elements selectByPrimaryKeyForFront(String id) {
+        EngTheme engTheme = engThemeMapper.selectByPrimaryKey(id);
+        Assert.notNull(engTheme, MsgConstant.DATA_NOT_FOUNT);
+        Document document = Jsoup.parse(engTheme.getTemplate());
+        Elements containers = document.getElementsByClass(MsgConstant.CONTAINER);
+        //从数据库中取出与之对应的组件并替换相应的组件
+        getElementsByIdFromDbAndReplaceForBackstage(id, containers);
+        return containers;
+    }
+
+    private void getCurrentThemeWithCompsAndBuildTheme(String engThemeRefUserId, Elements containers) {
         List<EngThemeRefCompUser> engThemeRefCompUsers = engThemeRefCompUserMapper.selectByThemeUserId(engThemeRefUserId);
         List<String> compIds = engThemeRefCompUsers.stream().map(EngThemeRefCompUser::getCompid).collect(Collectors.toList());
         List<EngComp> themeRefCompsFromDb = engCompMapper.getThemeRefCompsFromDb(compIds);
-        Elements elementsByTag = container.getElementsByTag(MsgConstant.COMP_ID);
+        Elements elementsByTag = containers.get(0).getElementsByTag(MsgConstant.COMP_ID);
         elementsByTag.forEach(element -> engThemeRefCompUsers.forEach(engThemeRefCompUser -> {
             if (null != element.parent()) {
                 if (element.parent().id().equalsIgnoreCase(engThemeRefCompUser.getParentId())) {
@@ -168,42 +192,64 @@ public class EngThemeService {
         return engThemeMapper.listAll();
     }
 
-    public Element selectByPrimaryKeyForBackstage(String id) {
+    public Elements selectByPrimaryKeyForBackstage(String id) {
         EngTheme engTheme = engThemeMapper.selectByPrimaryKey(id);
         Assert.notNull(engTheme, MsgConstant.DATA_NOT_FOUNT);
         Document document = Jsoup.parse(engTheme.getTemplateFull());
-        Element lyrow = document.getElementsByClass("lyrow").get(0);
+        Elements lyrows = document.getElementsByClass(MsgConstant.LYROW);
         //从数据库中取出与之对应的组件并替换相应的组件
-        getElementsByIdFromDbAndReplaceForBackstage(id, lyrow);
-        return lyrow;
+        getElementsByIdFromDbAndReplaceForBackstage(id, lyrows);
+        return lyrows;
     }
 
-    private void getElementsByIdFromDbAndReplaceForBackstage(String id, Element lyrow) {
+    private void getElementsByIdFromDbAndReplaceForBackstage(String id, Elements lyrows) {
         List<EngThemeRefComp> engThemeRefComps = engThemeRefCompMapper.selectByThemeId(id);
         List<String> ids = engThemeRefComps.stream().map(EngThemeRefComp::getCompid).collect(Collectors.toList());
         List<EngComp> engComps = engCompMapper.getThemeRefCompsFromDb(ids);
         engThemeRefComps.forEach(engThemeRefComp -> engComps.forEach(engComp -> {
             if (engThemeRefComp.getCompid().equalsIgnoreCase(engComp.getId())) {
-                Element parent = lyrow.getElementById(engThemeRefComp.getParentId());
-                parent.html(engComp.getTemplateFull());
+                lyrows.forEach(lyrow -> {
+                    Element parent = lyrow.getElementsByAttributeValue(MsgConstant.LAYOUTID, engThemeRefComp.getParentId()).first();
+                    if (parent != null) {
+                        Element element = parent.getElementsByTag(MsgConstant.COMP_ID).get(0);
+                        Element portletFull = Jsoup.parse(engComp.getTemplate()).getElementsByClass(MsgConstant.PORTLET).get(0);
+                        element.replaceWith(portletFull);
+                    }
+                });
             }
         }));
     }
 
     @Transactional
-    public void updateToBackstage(String id, EngTheme record) {
-        EngTheme engTheme = engThemeMapper.selectByPrimaryKey(id);
+    public void updateToBackstage(EngTheme record) {
+        log.info("开始进行更新，更新数据为：{}，id为：{}", record.toString(), record.getId());
+        List<JSONObject> jsonObjects = genDataBaseTemplateHtml(record);
+        updateByPrimaryKeyWithBLOBs(record);
+        //删除掉之前关联的comp
+        deleteEngThemeRefComp(record.getId());
+        //存储用户与主题之间的对应关系表
+        saveEngThemeRefComp(record.getId(), jsonObjects);
+    }
+
+    /**
+     * 将页面传过来的组件用占位符替换，并将替换的数据返回出来
+     *
+     * @param record
+     * @return
+     */
+    private List<JSONObject> genDataBaseTemplateHtml(EngTheme record) {
         Document html = Jsoup.parse(record.getTemplate());
+        Document editHtml = Jsoup.parse(record.getTemplateFull());
         //去除所有模板标识，并用占位符替换，返回出所有的模板
         List<JSONObject> jsonObjects = PageUtil.removeTemplatesReplaceAndReturnTemplates(html);
-        //存储用户主题
-        engTheme.setTemplate(html.outerHtml());
-        engThemeMapper.updateByPrimaryKeyWithBLOBs(engTheme);
-        //删除掉之前关联的comp
-        deleteEngThemeRefComp(id);
-        //存储用户与主题之间的对应关系表
-        saveEngThemeRefComp(id, jsonObjects);
-
+        PageUtil.removeTemplatesReplaceAndReturnTemplates(editHtml);
+        //存储主题
+        Element container = html.getElementsByClass(MsgConstant.CONTAINER).get(0);
+        Elements lyrows = editHtml.getElementsByClass(MsgConstant.LYROW);
+        record.setTemplate(container.outerHtml());
+        record.setTemplateFull(lyrows.outerHtml());
+        log.info("组装完后的数据为:{}", record);
+        return jsonObjects;
     }
 
     private int deleteEngThemeRefComp(String id) {
