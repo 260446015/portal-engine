@@ -1,6 +1,5 @@
 package com.yonyougov.portal.engine.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -9,17 +8,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author yindwe@yonyu.com
- * @Date 2019/5/7 16:25
+ * @Author yindwe@yonyou.com
+ * @Date 2019/6/14
  * @Description
  */
-@ApiModel(value = "EngTheme")
+@ApiModel(value = "com.yonyougov.portal.engine.entity.EngTheme")
 @Data
 public class EngTheme implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value = "主键",hidden = true)
+    @ApiModelProperty(value = "主键")
     private String id;
 
     /**
@@ -31,14 +30,13 @@ public class EngTheme implements Serializable {
     /**
      * 时间戳
      */
-    @ApiModelProperty(value = "时间戳",hidden = true)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @ApiModelProperty(value = "时间戳")
     private Date ts;
 
     /**
      * 删除标记
      */
-    @ApiModelProperty(value = "删除标记",hidden = true)
+    @ApiModelProperty(value = "删除标记")
     private String dr;
 
     /**
@@ -46,6 +44,12 @@ public class EngTheme implements Serializable {
      */
     @ApiModelProperty(value = "模板名称")
     private String templateName;
+
+    /**
+     * 模板
+     */
+    @ApiModelProperty(value = "模板")
+    private String template;
 
     /**
      * URL
@@ -66,10 +70,10 @@ public class EngTheme implements Serializable {
     private String defaultTheme;
 
     /**
-     * 模板
+     * 模板全部
      */
-    @ApiModelProperty(value = "模板")
-    private String template;
+    @ApiModelProperty(value = "模板全部")
+    private String templateFull;
 
     private static final long serialVersionUID = 1L;
 }

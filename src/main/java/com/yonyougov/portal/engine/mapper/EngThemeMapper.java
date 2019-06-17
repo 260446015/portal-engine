@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author yindwe@yonyu.com
- * @Date 2019/5/7 16:25
+ * @Author yindwe@yonyou.com
+ * @Date 2019/6/14
  * @Description
  */
 public interface EngThemeMapper {
@@ -21,18 +21,17 @@ public interface EngThemeMapper {
 
     int updateByPrimaryKeySelective(EngTheme record);
 
-    int updateByPrimaryKeyWithBLOBs(EngTheme record);
-
     int updateByPrimaryKey(EngTheme record);
 
     int updateBatch(List<EngTheme> list);
 
     int batchInsert(@Param("list") List<EngTheme> list);
 
+    int updateByPrimaryKeyWithBLOBs(EngTheme record);
+
     List<EngTheme> listAll();
 
     EngTheme selectByPrimaryKeyWithOutBlob(String id);
 
-    EngTheme selectByDefaultTheme(@Param("defaultTheme")String defaultTheme);
-
+    EngTheme selectByDefaultTheme(@Param("defaultTheme") String defaultTheme);
 }

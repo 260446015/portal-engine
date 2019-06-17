@@ -51,11 +51,15 @@ public class EngThemeService {
     public void insertToBackstage(EngTheme record) {
         log.info(record.toString());
         Document html = Jsoup.parse(record.getTemplate());
+        Document editHtml = Jsoup.parse(record.getTemplateFull());
         //去除所有模板标识，并用占位符替换，返回出所有的模板
         List<JSONObject> jsonObjects = PageUtil.removeTemplatesReplaceAndReturnTemplates(html);
+        PageUtil.removeTemplatesReplaceAndReturnTemplates(editHtml);
         //存储主题
         Element container = html.getElementsByClass("container").get(0);
+        Element lyrow = editHtml.getElementsByClass("lyrow").get(0);
         record.setTemplate(container.outerHtml());
+        record.setTemplateFull(lyrow.outerHtml());
         String themeId = saveTheme(record);
         //存储用户与主题之间的对应关系表
         saveEngThemeRefComp(themeId, jsonObjects);
@@ -167,20 +171,20 @@ public class EngThemeService {
     public Element selectByPrimaryKeyForBackstage(String id) {
         EngTheme engTheme = engThemeMapper.selectByPrimaryKey(id);
         Assert.notNull(engTheme, MsgConstant.DATA_NOT_FOUNT);
-        Document document = Jsoup.parse(engTheme.getTemplate());
-        Element container = document.getElementsByClass("container").get(0);
+        Document document = Jsoup.parse(engTheme.getTemplateFull());
+        Element lyrow = document.getElementsByClass("lyrow").get(0);
         //从数据库中取出与之对应的组件并替换相应的组件
-        getElementsByIdFromDbAndReplaceForBackstage(id, container);
-        return container.child(0);
+        getElementsByIdFromDbAndReplaceForBackstage(id, lyrow);
+        return lyrow;
     }
 
-    private void getElementsByIdFromDbAndReplaceForBackstage(String id, Element container) {
+    private void getElementsByIdFromDbAndReplaceForBackstage(String id, Element lyrow) {
         List<EngThemeRefComp> engThemeRefComps = engThemeRefCompMapper.selectByThemeId(id);
         List<String> ids = engThemeRefComps.stream().map(EngThemeRefComp::getCompid).collect(Collectors.toList());
         List<EngComp> engComps = engCompMapper.getThemeRefCompsFromDb(ids);
         engThemeRefComps.forEach(engThemeRefComp -> engComps.forEach(engComp -> {
             if (engThemeRefComp.getCompid().equalsIgnoreCase(engComp.getId())) {
-                Element parent = container.getElementById(engThemeRefComp.getParentId());
+                Element parent = lyrow.getElementById(engThemeRefComp.getParentId());
                 parent.html(engComp.getTemplateFull());
             }
         }));
@@ -205,4 +209,21 @@ public class EngThemeService {
     private int deleteEngThemeRefComp(String id) {
         return engThemeRefCompMapper.deleteByThemeId(id);
     }
+
+    public int insert(EngTheme record) {
+        return engThemeMapper.insert(record);
+    }
+
+    public EngTheme selectByPrimaryKey(String id) {
+        return engThemeMapper.selectByPrimaryKey(id);
+    }
+
+    public int updateBatch(List<EngTheme> list) {
+        return engThemeMapper.updateBatch(list);
+    }
+
+    public int batchInsert(List<EngTheme> list) {
+        return engThemeMapper.batchInsert(list);
+    }
 }
+
