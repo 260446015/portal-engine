@@ -45,9 +45,6 @@ public class CommonDataInject {
                         declaredField.set(arg, "N");
                     }
                 }
-//                Field id = arg.getClass().getDeclaredField("id");
-//                id.setAccessible(true);
-//                id.set(arg, UUID.randomUUID());
             }
         }
         return pjp.proceed();

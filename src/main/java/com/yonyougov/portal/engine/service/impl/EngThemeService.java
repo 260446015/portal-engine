@@ -60,6 +60,7 @@ public class EngThemeService {
     private void saveToBackstage(EngTheme record) {
         log.info("开始进行新增，新增数据为：{}", record.toString());
         List<JSONObject> jsonObjects = genDataBaseTemplateHtml(record);
+        record.setDefaultTheme("N");
         String themeId = saveTheme(record);
         //存储用户与主题之间的对应关系表
         saveEngThemeRefComp(themeId, jsonObjects);
@@ -181,7 +182,7 @@ public class EngThemeService {
     }
 
     public int updateByPrimaryKeyWithBLOBs(EngTheme record) {
-        return engThemeMapper.updateByPrimaryKeyWithBLOBs(record);
+        return engThemeMapper.updateByPrimaryKeySelective(record);
     }
 
     public int updateByPrimaryKey(EngTheme record) {

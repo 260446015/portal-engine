@@ -92,12 +92,12 @@ public class EngThemeController extends BaseController {
     }
 
     @ApiOperation(value = "查询当前用户主题")
-    @GetMapping("/front")
-    public ApiResult listForFront() {
+    @GetMapping("/front/{userId}")
+    public ApiResult listForFront(@PathVariable String userId) {
         Elements document;
         try {
-            User currentUser = UserUtil.getCurrentUser();
-            document = engThemeService.selectByUserIdForFront(currentUser.getId());
+//            User currentUser = UserUtil.getCurrentUser();
+            document = engThemeService.selectByUserIdForFront(userId);
         } catch (Exception e) {
             return error(e.getMessage());
         }
