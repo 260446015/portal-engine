@@ -5,7 +5,7 @@ import com.yonyougov.portal.engine.dto.ApiResult;
 import com.yonyougov.portal.engine.dto.EngThemeDTO;
 import com.yonyougov.portal.engine.entity.EngTheme;
 import com.yonyougov.portal.engine.entity.User;
-import com.yonyougov.portal.engine.service.impl.EngThemeService;
+import com.yonyougov.portal.engine.service.IEngThemeService;
 import com.yonyougov.portal.engine.util.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +27,7 @@ import java.util.List;
 public class EngThemeController extends BaseController {
 
     @Resource
-    private EngThemeService engThemeService;
+    private IEngThemeService engThemeService;
 
     @ApiOperation(value = "后台管理员新增主题")
     @PostMapping("backstage")

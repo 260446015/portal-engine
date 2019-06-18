@@ -6,6 +6,7 @@ import com.yonyougov.portal.engine.common.MsgConstant;
 import com.yonyougov.portal.engine.dto.EngThemeDTO;
 import com.yonyougov.portal.engine.entity.*;
 import com.yonyougov.portal.engine.mapper.*;
+import com.yonyougov.portal.engine.service.IEngThemeService;
 import com.yonyougov.portal.engine.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class EngThemeService {
+public class EngThemeService implements IEngThemeService {
 
     @Resource
     private EngThemeMapper engThemeMapper;
@@ -42,12 +43,14 @@ public class EngThemeService {
     private EngThemeRefCompMapper engThemeRefCompMapper;
 
     @Transactional
+    @Override
     public int deleteByPrimaryKey(String id) {
         engThemeRefCompMapper.deleteByThemeId(id);
         return engThemeMapper.deleteByPrimaryKey(id);
     }
 
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void saveOrUpdateToBackstage(EngTheme record) {
         //判断传入的数据是否有id，如果有id则进行数据更新；如果没有，则是新增
         if (StringUtils.isEmpty(record.getId())) {
@@ -67,6 +70,7 @@ public class EngThemeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void insertToFront(EngThemeDTO record, String userId) {
         //存储用户与主题关联关系
         EngThemeRefUser engThemeRefUser = saveThemeRefUser(record.getThemeId(), userId);
@@ -128,10 +132,6 @@ public class EngThemeService {
         return refUser;
     }
 
-    public int insertSelective(EngTheme record) {
-        return engThemeMapper.insertSelective(record);
-    }
-
     public Elements selectByUserIdForFront(String userId) {
         //获取ENG_THEME_REF_USER表中用户启用的主题(查询T的时候数据库必定只有一条)
         List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByUserIdAndActive(userId, "Y");
@@ -189,10 +189,12 @@ public class EngThemeService {
         return engThemeMapper.updateByPrimaryKey(record);
     }
 
+    @Override
     public List<EngTheme> listAll() {
         return engThemeMapper.listAll();
     }
 
+    @Override
     public Elements selectByPrimaryKeyForBackstage(String id) {
         EngTheme engTheme = engThemeMapper.selectByPrimaryKey(id);
         Assert.notNull(engTheme, MsgConstant.DATA_NOT_FOUNT);
