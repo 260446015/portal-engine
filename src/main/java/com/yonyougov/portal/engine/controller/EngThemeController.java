@@ -3,10 +3,9 @@ package com.yonyougov.portal.engine.controller;
 import com.yonyougov.portal.engine.common.MsgConstant;
 import com.yonyougov.portal.engine.dto.ApiResult;
 import com.yonyougov.portal.engine.dto.EngThemeDTO;
+import com.yonyougov.portal.engine.dto.EngThemeVO;
 import com.yonyougov.portal.engine.entity.EngTheme;
-import com.yonyougov.portal.engine.entity.User;
 import com.yonyougov.portal.engine.service.IEngThemeService;
-import com.yonyougov.portal.engine.util.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jsoup.select.Elements;
@@ -48,8 +47,8 @@ public class EngThemeController extends BaseController {
         try {
             Assert.notNull(engThemeDTO.getName(), "名称不能为空");
             Assert.notNull(engThemeDTO.getInnerData(), "组件与parentId不能为空");
-            User currentUser = UserUtil.getCurrentUser();
-            engThemeService.insertToFront(engThemeDTO, currentUser.getId());
+            Assert.notNull(engThemeDTO.getUserId(), "用户id不能为空");
+            engThemeService.insertToFront(engThemeDTO, engThemeDTO.getUserId());
         } catch (Exception e) {
             return error(e.getMessage());
         }
@@ -94,13 +93,13 @@ public class EngThemeController extends BaseController {
     @ApiOperation(value = "查询当前用户主题")
     @GetMapping("/front/{userId}")
     public ApiResult listForFront(@PathVariable String userId) {
-        Elements document;
+        EngThemeVO vo;
         try {
 //            User currentUser = UserUtil.getCurrentUser();
-            document = engThemeService.selectByUserIdForFront(userId);
+            vo = engThemeService.selectByUserIdForFront(userId);
         } catch (Exception e) {
             return error(e.getMessage());
         }
-        return success(document.outerHtml());
+        return success(vo);
     }
 }

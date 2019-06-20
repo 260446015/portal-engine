@@ -17,4 +17,9 @@ public class MsgConstant {
     public static final String CONTAINER = "container";
     public static final String LYROW = "lyrow";
     public static final String PORTLET = "portlet";
+    /**
+     * 操作标识
+     */
+    public static final String ACTIVE_TRUE = "Y";
+    public static final String ACTIVE_FALSE = "N";
 }

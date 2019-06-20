@@ -1,6 +1,7 @@
 package com.yonyougov.portal.engine.service;
 
 import com.yonyougov.portal.engine.dto.EngThemeDTO;
+import com.yonyougov.portal.engine.dto.EngThemeVO;
 import com.yonyougov.portal.engine.entity.EngTheme;
 import org.jsoup.select.Elements;
 
@@ -33,7 +34,7 @@ public interface IEngThemeService {
      * @param userId
      * @return
      */
-    Elements selectByUserIdForFront(String userId);
+    EngThemeVO selectByUserIdForFront(String userId);
 
     /**
      * 后台全查所有的主题页面

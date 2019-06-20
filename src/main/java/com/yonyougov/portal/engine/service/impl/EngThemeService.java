@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yonyougov.portal.engine.common.MsgConstant;
 import com.yonyougov.portal.engine.dto.EngThemeDTO;
+import com.yonyougov.portal.engine.dto.EngThemeVO;
 import com.yonyougov.portal.engine.entity.*;
 import com.yonyougov.portal.engine.mapper.*;
 import com.yonyougov.portal.engine.service.IEngThemeService;
@@ -116,39 +117,43 @@ public class EngThemeService implements IEngThemeService {
         if (engThemeRefUserList.size() != 0) {
             for (EngThemeRefUser engThemeRefUser : engThemeRefUserList) {
                 if (!engThemeRefUser.getThemeId().equals(themeId)) {
-                    engThemeRefUser.setActive("N");
+                    engThemeRefUser.setActive(MsgConstant.ACTIVE_FALSE);
                 } else {
                     refUser = engThemeRefUser;
                 }
             }
             engThemeRefUserMapper.updateBatch(engThemeRefUserList);
         }
-
         if (refUser == null) {
             refUser = new EngThemeRefUser();
-            refUser.setThemeId(themeId).setUserId(userId).setActive("Y");
+            refUser.setThemeId(themeId).setUserId(userId).setActive(MsgConstant.ACTIVE_TRUE);
             engThemeRefUserMapper.insert(refUser);
         }
         return refUser;
     }
 
-    public Elements selectByUserIdForFront(String userId) {
+    @Override
+    public EngThemeVO selectByUserIdForFront(String userId) {
+        EngThemeVO vo = new EngThemeVO();
         //获取ENG_THEME_REF_USER表中用户启用的主题(查询T的时候数据库必定只有一条)
         List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByUserIdAndActive(userId, "Y");
+        EngTheme engTheme;
         if (engThemeRefUserList.size() == 0) {
-
-            EngTheme engTheme = engThemeMapper.selectByDefaultTheme("Y");
-            return selectByPrimaryKeyForFront(engTheme.getId());
+            engTheme = engThemeMapper.selectByDefaultTheme("Y");
+            Elements elements = selectByPrimaryKeyForFront(engTheme.getId());
+            vo.setSuccessAssemblyHtml(elements.outerHtml()).setThemeId(engTheme.getId());
+            return vo;
         }
         EngThemeRefUser engThemeRefUser = engThemeRefUserList.get(0);
         //获取当前用户使用的主题
-        EngTheme engTheme = engThemeMapper.selectByPrimaryKey(engThemeRefUser.getThemeId());
+        engTheme = engThemeMapper.selectByPrimaryKey(engThemeRefUser.getThemeId());
         Document html = Jsoup.parse(engTheme.getTemplate());
         Elements containers = html.getElementsByClass(MsgConstant.CONTAINER);
         String engThemeRefUserId = engThemeRefUser.getId();
         //获取当前用户当前主题下所有组件的信息并组装最后的页面
         getCurrentThemeWithCompsAndBuildTheme(engThemeRefUserId, containers);
-        return containers;
+        vo.setThemeId(engTheme.getId()).setSuccessAssemblyHtml(containers.outerHtml());
+        return vo;
     }
 
     private Elements selectByPrimaryKeyForFront(String id) {

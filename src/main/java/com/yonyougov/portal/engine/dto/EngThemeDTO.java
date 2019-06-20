@@ -24,4 +24,6 @@ public class EngThemeDTO implements Serializable {
     private String name;
     @ApiModelProperty(value = "包含组件id和parentId的jsonArray对象",example = "[parentId:123,compid:abc]")
     private JSONArray innerData;
+    @ApiModelProperty(value = "用户id")
+    private String userId;
 }
