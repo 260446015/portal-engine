@@ -5,14 +5,14 @@ app:
     dbname: orcl
     username: engadmin
     password: 123456
-  rabbitmq:
-    host: 10.10.65.43:5672
   redis:
-    host: 10.16.21.66
+    host: 192.168.50.181
     port: 6379
-  eureka:
-    defaultZone: https://dev81.yonyougov.top/eureka
-    registerWithEureka: false
+  rabbitmq:
+    addresses: 192.168.50.181:5672
+    username: guest
+    password: guest
+  defaultZone: http://crux-cloud-discovery:31209/eureka/
 spring:
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
@@ -54,7 +54,7 @@ server:
 eureka:
   client:
     enabled: true
-    registerWithEureka: ${app.eureka.registerWithEureka}
+    registerWithEureka: false
     serviceUrl:
       #      defaultZone: http://10.16.21.43:8761/eureka/
       defaultZone: ${app.eureka.defaultZone}
