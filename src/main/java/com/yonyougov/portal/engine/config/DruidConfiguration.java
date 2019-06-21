@@ -8,9 +8,8 @@ import com.google.common.collect.Lists;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class DruidConfiguration {
 
     //这个注解读取配置文件前缀为prefix的配置，将外部的配置文件与这里绑定

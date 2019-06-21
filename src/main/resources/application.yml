@@ -1,25 +1,31 @@
+app:
+  db:
+    host: 192.168.50.110
+    port: 1521
+    dbname: orcl
+    username: engadmin
+    password: 123456
+  rabbitmq:
+    host: 10.10.65.43:5672
+  redis:
+    host: 10.16.21.66
+    port: 6379
+  eureka:
+    defaultZone: https://dev81.yonyougov.top/eureka
+    registerWithEureka: false
 spring:
-  profiles:
-    active: dev
-  druid:
-    druidClassName: oracle.jdbc.driver.OracleDriver
-    #最大连接数
-    maxActive: 30
-    #最小连接数
-    minIdle: 5
-    #获取连接的最大等待时间
-    maxWait: 10000
-    #解决mysql8小时的问题
-    validationgQuery: SELECT 'X'
-    #空闲连接的检查时间间隔
-    timeBetweenEvictionRunsMillis: 60000
-    #空闲连接最小空闲时间
-    minEvictableIdleTimeMillis: 300000
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@${app.db.host}:${app.db.port}:${app.db.dbname}
+    username: ${app.db.username}
+    password: ${app.db.password}
   http:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
+  application:
+    name: pengine
 pagehelper:
   supportMethodsArguments: true
   reasonable: true
@@ -28,8 +34,14 @@ pagehelper:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 server:
-  port: 8088
-  #编码格式
-  tomcat:
-    uri-encoding: UTF-8
-  address: 0.0.0.0
+  port: 8080
+  servlet:
+    context-path: /portal-engine
+
+eureka:
+  client:
+    enabled: true
+    registerWithEureka: ${app.eureka.registerWithEureka}
+    serviceUrl:
+      #      defaultZone: http://10.16.21.43:8761/eureka/
+      defaultZone: ${app.eureka.defaultZone}
