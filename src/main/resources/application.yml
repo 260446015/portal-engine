@@ -19,6 +19,19 @@ spring:
     url: jdbc:oracle:thin:@${app.db.host}:${app.db.port}:${app.db.dbname}
     username: ${app.db.username}
     password: ${app.db.password}
+  rabbitmq:
+    addresses: ${app.rabbitmq.host}
+    username: ${app.rabbitmq.username}
+    password: ${app.rabbitmq.password}
+    publisher-confirms: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+    template:
+      mandatory: true
+  redis:
+    host: ${app.redis.host}
+    port: ${app.redis.port}
   http:
     encoding:
       charset: UTF-8
