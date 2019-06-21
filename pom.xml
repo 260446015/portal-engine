@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>com.yonyougov.portal</groupId>
-    <artifactId>portal-engine</artifactId>
+    <artifactId>ptp-engine</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>portal-engine</name>
+    <name>ptp-engine</name>
     <description>门户引擎</description>
 
     <properties>

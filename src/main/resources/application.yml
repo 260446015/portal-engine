@@ -36,7 +36,7 @@ mybatis:
 server:
   port: 8080
   servlet:
-    context-path: /portal-engine
+    context-path: /ptp-engine
 
 eureka:
   client:
