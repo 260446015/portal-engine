@@ -201,4 +201,8 @@
         from ENG_THEME_REF_COMP_USER
         where THEME_USER_ID=#{themeUserId,jdbcType=VARCHAR}
     </select>
+    <delete id="deleteByThemeUserId">
+        delete from ENG_THEME_REF_COMP_USER
+        where THEME_USER_ID = #{th,jdbcType=VARCHAR}
+    </delete>
 </mapper>

@@ -75,7 +75,14 @@ public class EngThemeService implements IEngThemeService {
     public void insertToFront(EngThemeDTO record, String userId) {
         //存储用户与主题关联关系
         EngThemeRefUser engThemeRefUser = saveThemeRefUser(record.getThemeId(), userId);
+        //清除之前用户的主题
+        removeOldThemeRefUser(engThemeRefUser.getId());
         saveThemeRefCompUser(engThemeRefUser.getId(), record);
+    }
+
+    private void removeOldThemeRefUser(String themeUserId) {
+        log.info("执行清除用户之前的布局，布局id为：{}", themeUserId);
+        engThemeRefCompUserMapper.deleteByThemeUserId(themeUserId);
     }
 
     private void saveThemeRefCompUser(String themeRefUserId, EngThemeDTO record) {
