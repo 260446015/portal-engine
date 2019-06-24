@@ -30,4 +30,6 @@ public interface EngThemeRefCompMapper {
     List<EngThemeRefComp> selectByThemeId(String id);
 
     int deleteByThemeId(String id);
+
+    EngThemeRefComp selectByParentIdAndThemeId(String parentId, String themeId);
 }

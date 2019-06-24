@@ -76,7 +76,7 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
         EngThemeRefUser engThemeRefUser = saveThemeRefUser(record.getThemeId(), userId);
         //清除之前用户的主题
         removeOldThemeRefUser(engThemeRefUser.getId());
-        saveThemeRefCompUser(engThemeRefUser.getId(), record);
+        saveThemeRefCompUser(engThemeRefUser, record);
     }
 
     private void removeOldThemeRefUser(String themeUserId) {
@@ -84,15 +84,20 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
         engThemeRefCompUserMapper.deleteByThemeUserId(themeUserId);
     }
 
-    private void saveThemeRefCompUser(String themeRefUserId, EngThemeDTO record) {
+    private void saveThemeRefCompUser(EngThemeRefUser engThemeRefUser, EngThemeDTO record) {
         //获取所有的组件与parentId的映射关系
         JSONArray innerData = record.getInnerData();
         //循环遍历出所有的数据并存储
         for (int i = 0; i < innerData.size(); i++) {
             JSONObject object = innerData.getJSONObject(i);
+            String parentId = object.getString(MsgConstant.LAYOUTID);
+            String themeId = engThemeRefUser.getThemeId();
+            String compid = object.getString(MsgConstant.COMP_ID);
+            EngThemeRefComp engThemeRefComp = engThemeRefCompMapper.selectByParentIdAndThemeId(parentId, themeId);
+            EngComp engComp = engCompMapper.selectByPrimaryKey(compid);
             EngThemeRefCompUser engThemeRefCompUser = new EngThemeRefCompUser();
-            engThemeRefCompUser.setThemeUserId(themeRefUserId).setCompid(object.getString(MsgConstant.COMP_ID))
-                    .setIcon("待定").setUrl("待定").setParentId(object.getString(MsgConstant.LAYOUTID));
+            engThemeRefCompUser.setThemeUserId(engThemeRefUser.getId()).setCompid(compid)
+                    .setIcon("待定").setUrl(StringUtils.isEmpty(engThemeRefComp) ? engComp.getUrl() : engThemeRefComp.getUrl()).setParentId(parentId);
             engThemeRefCompUserMapper.insert(engThemeRefCompUser);
         }
     }

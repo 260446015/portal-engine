@@ -197,4 +197,9 @@
     <delete id="deleteByThemeId">
       delete from ENG_THEME_REF_COMP where theme_id = #{id,jdbcType=VARCHAR}
     </delete>
+    <select id="selectByParentIdAndThemeId" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/>
+      from ENG_THEME_REF_COMP
+      where PARENT_ID = #{1} and THEME_ID = #{2}
+    </select>
 </mapper>
