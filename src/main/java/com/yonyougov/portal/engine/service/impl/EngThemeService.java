@@ -174,10 +174,11 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
                 if (element.parent().id().equalsIgnoreCase(engThemeRefCompUser.getParentId())) {
                     EngComp engComp = themeRefCompsFromDb.stream().filter(p -> p.getId()
                             .equalsIgnoreCase(engThemeRefCompUser.getCompid())).findFirst().get();
-                    element.replaceWith(Jsoup.parse(engComp.getTemplate()).body());
-                    element.attr(MsgConstant.DATA_INTERFACE, StringUtils.isEmpty(engThemeRefCompUser.getUrl()) ?
+                    Element body = Jsoup.parse(engComp.getTemplate()).body();
+                    body.attr(MsgConstant.DATA_INTERFACE, StringUtils.isEmpty(engThemeRefCompUser.getUrl()) ?
                             engComp.getUrl() : engThemeRefCompUser.getUrl());
-                    log.info("element:--------->" + element);
+                    element.replaceWith(body);
+                    log.info("element:--------->" + body);
                 }
             }
         }));

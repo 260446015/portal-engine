@@ -12,7 +12,8 @@ app:
     addresses: 192.168.50.181:5672
     username: guest
     password: guest
-  defaultZone: http://crux-cloud-discovery:31209/eureka/
+#  defaultZone: http://crux-cloud-discovery:31209/eureka/
+  defaultZone: https://dev81.yonyougov.top/eureka
 spring:
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
@@ -20,7 +21,7 @@ spring:
     username: ${app.db.username}
     password: ${app.db.password}
   rabbitmq:
-    addresses: ${app.rabbitmq.host}
+    addresses: ${app.rabbitmq.addresses}
     username: ${app.rabbitmq.username}
     password: ${app.rabbitmq.password}
     publisher-confirms: true
@@ -57,4 +58,4 @@ eureka:
     registerWithEureka: false
     serviceUrl:
       #      defaultZone: http://10.16.21.43:8761/eureka/
-      defaultZone: ${app.eureka.defaultZone}
+      defaultZone: ${app.defaultZone}
