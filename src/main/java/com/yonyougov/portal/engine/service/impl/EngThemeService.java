@@ -177,6 +177,7 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
                     element.replaceWith(Jsoup.parse(engComp.getTemplate()).body());
                     element.attr(MsgConstant.DATA_INTERFACE, StringUtils.isEmpty(engThemeRefCompUser.getUrl()) ?
                             engComp.getUrl() : engThemeRefCompUser.getUrl());
+                    log.info("element:--------->" + element);
                 }
             }
         }));
