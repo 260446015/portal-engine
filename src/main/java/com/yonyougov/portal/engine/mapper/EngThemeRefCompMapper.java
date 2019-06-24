@@ -31,5 +31,5 @@ public interface EngThemeRefCompMapper {
 
     int deleteByThemeId(String id);
 
-    EngThemeRefComp selectByParentIdAndThemeId(String parentId, String themeId);
+    EngThemeRefComp selectByParentIdAndThemeId(@Param("parentId") String parentId, @Param("themeId") String themeId);
 }

@@ -200,6 +200,6 @@
     <select id="selectByParentIdAndThemeId" resultMap="BaseResultMap">
       select <include refid="Base_Column_List"/>
       from ENG_THEME_REF_COMP
-      where PARENT_ID = #{1} and THEME_ID = #{2}
+      where PARENT_ID = #{parentId,jdbcType=VARCHAR}  and THEME_ID = #{themeId,jdbcType=VARCHAR}
     </select>
 </mapper>
