@@ -95,7 +95,7 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
             String parentId = object.getString(MsgConstant.LAYOUTID);
             String themeId = engThemeRefUser.getThemeId();
             String compid = object.getString(MsgConstant.COMP_ID);
-            EngThemeRefComp engThemeRefComp = engThemeRefCompMapper.selectByParentIdAndThemeId(parentId, themeId);
+            EngThemeRefComp engThemeRefComp = engThemeRefCompMapper.selectByThemeIdAndCompid(themeId,compid);
             EngComp engComp = engCompMapper.selectByPrimaryKey(compid);
             EngThemeRefCompUser engThemeRefCompUser = new EngThemeRefCompUser();
             engThemeRefCompUser.setId(engThemeRefComp.getId()).setThemeUserId(engThemeRefUser.getId()).setCompid(compid)
@@ -136,10 +136,10 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
     public EngThemeVO selectByUserIdForFront(String userId) {
         EngThemeVO vo = new EngThemeVO();
         //获取ENG_THEME_REF_USER表中用户启用的主题(查询T的时候数据库必定只有一条)
-        List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByUserIdAndActive(userId, "Y");
+        List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByUserIdAndActive(userId, MsgConstant.ACTIVE_TRUE);
         EngTheme engTheme;
         if (engThemeRefUserList.size() == 0) {
-            engTheme = engThemeMapper.selectByDefaultTheme("Y");
+            engTheme = engThemeMapper.selectByDefaultTheme(MsgConstant.ACTIVE_TRUE);
             Elements elements = selectByPrimaryKeyForFront(engTheme.getId());
             vo.setSuccessAssemblyHtml(elements.outerHtml()).setThemeId(engTheme.getId());
             return vo;
