@@ -95,7 +95,6 @@ public class EngThemeController extends BaseController {
     public ApiResult listForFront(@PathVariable String userId) {
         EngThemeVO vo;
         try {
-//            User currentUser = UserUtil.getCurrentUser();
             vo = engThemeService.selectByUserIdForFront(userId);
         } catch (Exception e) {
             return error(e.getMessage());

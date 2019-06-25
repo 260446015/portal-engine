@@ -58,12 +58,14 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
     }
 
     protected void saveToBackstage(EngTheme record) {
+        log.info("执行新增开始------>{}", record);
         record.setDefaultTheme("N");
         String themeId = saveTheme(record);
         record.setId(themeId);
     }
 
     public void updateToBackstage(EngTheme record) {
+        log.info("执行更新开始------>{}", record);
         updateByPrimaryKeyWithBLOBs(record);
         //删除掉之前关联的comp
         deleteEngThemeRefComp(record.getId());
@@ -178,6 +180,7 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
                     Element portletElement = portlet.getElementsByClass(MsgConstant.PORTLET).get(0);
                     portletElement.attr(MsgConstant.DATA_INTERFACE, StringUtils.isEmpty(engThemeRefCompUser.getUrl()) ?
                             engComp.getUrl() : engThemeRefCompUser.getUrl());
+                    portletElement.attr(MsgConstant.ID, engThemeRefCompUser.getId());
                     element.replaceWith(portletElement);
                     log.info("portletElement:--------->" + portletElement);
                 }
@@ -227,6 +230,7 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
                         Element portletFull = Jsoup.parse(engComp.getTemplate()).getElementsByClass(MsgConstant.PORTLET).get(0);
                         portletFull.attr(MsgConstant.DATA_INTERFACE, StringUtils.isEmpty(engThemeRefComp.getUrl())
                                 ? engComp.getUrl() : engThemeRefComp.getUrl());
+                        portletFull.attr(MsgConstant.ID, engThemeRefComp.getId());
                         element.replaceWith(portletFull);
                     }
                 });
