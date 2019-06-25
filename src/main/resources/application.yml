@@ -6,7 +6,8 @@ app:
     username: engadmin
     password: 123456
   redis:
-    host: 192.168.50.181
+#    host: 192.168.50.181
+    host: 10.16.21.66
     port: 6379
   rabbitmq:
     addresses: 192.168.50.181:5672
@@ -15,6 +16,12 @@ app:
 #  defaultZone: http://crux-cloud-discovery:31209/eureka/
   defaultZone: https://dev81.yonyougov.top/eureka
 spring:
+  jpa:
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
     url: jdbc:oracle:thin:@${app.db.host}:${app.db.port}:${app.db.dbname}
@@ -48,7 +55,7 @@ pagehelper:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 server:
-  port: 8080
+  port: 8082
   servlet:
     context-path: /ptp-engine
 

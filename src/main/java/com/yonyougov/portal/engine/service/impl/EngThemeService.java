@@ -98,7 +98,7 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
             EngThemeRefComp engThemeRefComp = engThemeRefCompMapper.selectByParentIdAndThemeId(parentId, themeId);
             EngComp engComp = engCompMapper.selectByPrimaryKey(compid);
             EngThemeRefCompUser engThemeRefCompUser = new EngThemeRefCompUser();
-            engThemeRefCompUser.setThemeUserId(engThemeRefUser.getId()).setCompid(compid)
+            engThemeRefCompUser.setId(engThemeRefComp.getId()).setThemeUserId(engThemeRefUser.getId()).setCompid(compid)
                     .setIcon("待定").setUrl(StringUtils.isEmpty(engThemeRefComp) ? engComp.getUrl() : engThemeRefComp.getUrl()).setParentId(parentId);
             engThemeRefCompUserMapper.insert(engThemeRefCompUser);
         }
