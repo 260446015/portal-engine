@@ -225,9 +225,9 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
                     if (parent != null) {
                         Element element = parent.getElementsByTag(MsgConstant.COMP_ID).get(0);
                         Element portletFull = Jsoup.parse(engComp.getTemplate()).getElementsByClass(MsgConstant.PORTLET).get(0);
-                        element.replaceWith(portletFull);
-                        element.attr(MsgConstant.DATA_INTERFACE, StringUtils.isEmpty(engThemeRefComp.getUrl())
+                        portletFull.attr(MsgConstant.DATA_INTERFACE, StringUtils.isEmpty(engThemeRefComp.getUrl())
                                 ? engComp.getUrl() : engThemeRefComp.getUrl());
+                        element.replaceWith(portletFull);
                     }
                 });
             }
