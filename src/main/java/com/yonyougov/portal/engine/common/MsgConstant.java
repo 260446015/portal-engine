@@ -20,6 +20,7 @@ public class MsgConstant {
     public static final String PORTLET = "portlet";
     public static final String DATA_INTERFACE = "data-interface";
     public static final String ID = "id";
+    public static final String ICON = "icon";
     /**
      * 操作标识
      */

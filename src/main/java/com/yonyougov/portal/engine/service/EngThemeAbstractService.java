@@ -3,7 +3,6 @@ package com.yonyougov.portal.engine.service;
 import com.alibaba.fastjson.JSONObject;
 import com.yonyougov.portal.engine.common.MsgConstant;
 import com.yonyougov.portal.engine.entity.EngTheme;
-import com.yonyougov.portal.engine.entity.EngThemeRefComp;
 import com.yonyougov.portal.engine.mapper.EngThemeRefCompMapper;
 import com.yonyougov.portal.engine.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,12 +30,11 @@ public abstract class EngThemeAbstractService {
         log.info("开始进行数据处理，数据为：{}", record.toString());
         List<JSONObject> jsonObjects = genDataBaseTemplateHtml(record);
         if (StringUtils.isEmpty(record.getId())) {
-            saveToBackstage(record);
+            saveToBackstage(record, jsonObjects);
         } else {
-            updateToBackstage(record);
+            updateToBackstage(record, jsonObjects);
         }
-        //存储用户与主题之间的对应关系表
-        saveEngThemeRefComp(record.getId(), jsonObjects);
+
     }
 
     /**
@@ -60,22 +58,9 @@ public abstract class EngThemeAbstractService {
         return jsonObjects;
     }
 
-    protected abstract void saveToBackstage(EngTheme record);
+    protected abstract void saveToBackstage(EngTheme record, List<JSONObject> jsonObjects);
 
-    protected abstract void updateToBackstage(EngTheme record);
+    protected abstract void updateToBackstage(EngTheme record, List<JSONObject> jsonObjects);
 
 
-    private void saveEngThemeRefComp(String themeId, List<JSONObject> jsonObjects) {
-        jsonObjects.forEach(p -> {
-            String parentId = p.getString(MsgConstant.LAYOUTID);
-            Element element = (Element) p.get(MsgConstant.COMP);
-            EngThemeRefComp engThemeRefComp = new EngThemeRefComp();
-            engThemeRefComp.setCompid(element.attr(MsgConstant.COMP_ID));
-            engThemeRefComp.setThemeId(themeId);
-            engThemeRefComp.setIcon("待定");
-            engThemeRefComp.setParentId(parentId);
-            engThemeRefComp.setUrl(element.attr(MsgConstant.DATA_INTERFACE));
-            engThemeRefCompMapper.insert(engThemeRefComp);
-        });
-    }
 }

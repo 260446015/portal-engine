@@ -32,7 +32,10 @@ public class PageUtil {
         comps.forEach(c -> {
             JSONObject data = new JSONObject();
             data.put(MsgConstant.LAYOUTID, c.parent().attr(MsgConstant.LAYOUTID));
-            data.put("comp",c);
+            data.put(MsgConstant.COMP,c);
+            data.put(MsgConstant.COMP_ID,c.attr(MsgConstant.COMP_ID));
+            data.put(MsgConstant.DATA_INTERFACE,c.attr(MsgConstant.DATA_INTERFACE));
+            data.put(MsgConstant.ICON,c.attr(MsgConstant.ICON));
             result.add(data);
             c.replaceWith(new Element(MsgConstant.COMP_ID));
         });
