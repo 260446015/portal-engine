@@ -242,12 +242,15 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
                 lyrows.forEach(lyrow -> {
                     Element parent = lyrow.getElementsByAttributeValue(MsgConstant.LAYOUTID, engThemeRefComp.getParentId()).first();
                     if (parent != null) {
-                        Element element = parent.getElementsByTag(MsgConstant.COMP_ID).get(0);
-                        Element portletFull = Jsoup.parse(engComp.getTemplate()).getElementsByClass(MsgConstant.PORTLET).get(0);
-                        portletFull.attr(MsgConstant.DATA_INTERFACE, StringUtils.isEmpty(engThemeRefComp.getUrl())
-                                ? engComp.getUrl() : engThemeRefComp.getUrl());
-                        portletFull.attr(MsgConstant.ID, engThemeRefComp.getId());
-                        element.replaceWith(portletFull);
+                        Elements elements = parent.getElementsByTag(MsgConstant.COMP_ID);
+                        if(elements.size() != 0){
+                            Element element = elements.first();
+                            Element portletFull = Jsoup.parse(engComp.getTemplate()).getElementsByClass(MsgConstant.PORTLET).get(0);
+                            portletFull.attr(MsgConstant.DATA_INTERFACE, StringUtils.isEmpty(engThemeRefComp.getUrl())
+                                    ? engComp.getUrl() : engThemeRefComp.getUrl());
+                            portletFull.attr(MsgConstant.ID, engThemeRefComp.getId());
+                            element.replaceWith(portletFull);
+                        }
                     }
                 });
             }
@@ -255,7 +258,7 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
     }
 
 
-    private int updateEngThemeRefComp(String id, List<JSONObject> jsonObjects) {
+    private void updateEngThemeRefComp(String id, List<JSONObject> jsonObjects) {
         List<EngThemeRefComp> engThemeRefComps = engThemeRefCompMapper.selectByThemeId(id);
         engThemeRefComps.forEach(engThemeRefComp -> jsonObjects.forEach(jsonObject -> {
             if(engThemeRefComp.getParentId().equalsIgnoreCase(jsonObject.getString(MsgConstant.LAYOUTID))){
@@ -264,7 +267,7 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
                         .setUrl(jsonObject.getString(MsgConstant.DATA_INTERFACE));
             }
         }));
-        return engThemeRefCompMapper.deleteByThemeId(id);
+        engThemeRefCompMapper.updateBatch(engThemeRefComps);
     }
 
     public int insert(EngTheme record) {
