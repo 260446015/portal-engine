@@ -3,7 +3,6 @@ package com.yonyougov.portal.engine.service;
 import com.alibaba.fastjson.JSONObject;
 import com.yonyougov.portal.engine.common.MsgConstant;
 import com.yonyougov.portal.engine.entity.EngTheme;
-import com.yonyougov.portal.engine.mapper.EngThemeRefCompMapper;
 import com.yonyougov.portal.engine.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -12,7 +11,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -22,9 +20,6 @@ import java.util.List;
  */
 @Slf4j
 public abstract class EngThemeAbstractService {
-
-    @Resource
-    EngThemeRefCompMapper engThemeRefCompMapper;
 
     protected void saveOrUpdateTheme(EngTheme record) {
         log.info("开始进行数据处理，数据为：{}", record.toString());

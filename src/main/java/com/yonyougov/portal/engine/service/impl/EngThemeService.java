@@ -2,6 +2,7 @@ package com.yonyougov.portal.engine.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yonyougov.portal.engine.ThemeOccupiedException;
 import com.yonyougov.portal.engine.common.MsgConstant;
 import com.yonyougov.portal.engine.dto.EngThemeDTO;
 import com.yonyougov.portal.engine.dto.EngThemeVO;
@@ -73,9 +74,10 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
             EngThemeRefComp engThemeRefComp = new EngThemeRefComp();
             engThemeRefComp.setCompid(element.attr(MsgConstant.COMP_ID));
             engThemeRefComp.setThemeId(themeId);
-            engThemeRefComp.setIcon("待定");
             engThemeRefComp.setParentId(parentId);
-            engThemeRefComp.setUrl(element.attr(MsgConstant.DATA_INTERFACE));
+            //icon和url不做处理，交给组件设计器进行
+//            engThemeRefComp.setIcon("待定");
+//            engThemeRefComp.setUrl(element.attr(MsgConstant.DATA_INTERFACE));
             engThemeRefCompMapper.insert(engThemeRefComp);
         });
     }
@@ -83,8 +85,17 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
     public void updateToBackstage(EngTheme record, List<JSONObject> jsonObjects) {
         log.info("执行更新开始------>{}", record);
         updateByPrimaryKeyWithBLOBs(record);
-        //删除掉之前关联的comp
+        //检查主题是否被占用，抛出异常
+        checkIfThemeUsed(record.getId());
+        //修改之前关联的comp
         updateEngThemeRefComp(record.getId(), jsonObjects);
+    }
+
+    private void checkIfThemeUsed(String themeId) {
+        List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByThemeId(themeId);
+        if(engThemeRefUserList.size() != 0){
+            throw new ThemeOccupiedException("主题已被使用");
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -260,11 +271,9 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
 
     private void updateEngThemeRefComp(String id, List<JSONObject> jsonObjects) {
         List<EngThemeRefComp> engThemeRefComps = engThemeRefCompMapper.selectByThemeId(id);
-        engThemeRefComps.forEach(engThemeRefComp -> jsonObjects.forEach(jsonObject -> {
+        jsonObjects.forEach(jsonObject -> engThemeRefComps.forEach(engThemeRefComp -> {
             if(engThemeRefComp.getParentId().equalsIgnoreCase(jsonObject.getString(MsgConstant.LAYOUTID))){
-                engThemeRefComp.setCompid(jsonObject.getString(MsgConstant.COMP_ID))
-                        .setIcon(jsonObject.getString(MsgConstant.ICON))
-                        .setUrl(jsonObject.getString(MsgConstant.DATA_INTERFACE));
+                engThemeRefComp.setCompid(jsonObject.getString(MsgConstant.COMP_ID));
             }
         }));
         engThemeRefCompMapper.updateBatch(engThemeRefComps);
@@ -284,6 +293,11 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
 
     public int batchInsert(List<EngTheme> list) {
         return engThemeMapper.batchInsert(list);
+    }
+
+    @Override
+    public List<EngThemeVO> listAllTheme() {
+        return engThemeMapper.listAllTheme();
     }
 }
 

@@ -58,7 +58,7 @@ public class EngCompService {
     }
 
     public int updateByPrimaryKey(EngComp record) {
-        return engCompMapper.updateByPrimaryKey(record);
+        return engCompMapper.updateByPrimaryKeySelective(record);
     }
 
     public List<EngComp> listAll() {

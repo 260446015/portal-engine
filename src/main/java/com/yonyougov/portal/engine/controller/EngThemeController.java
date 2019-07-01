@@ -66,12 +66,24 @@ public class EngThemeController extends BaseController {
         return success(MsgConstant.OPERATION_SUCCESS);
     }
 
-    @ApiOperation(value = "查询主题列表")
+    @ApiOperation(value = "查询主题列表，下拉列表用")
     @GetMapping
     public ApiResult list() {
         List<EngTheme> engThemes;
         try {
             engThemes = engThemeService.listAll();
+        } catch (Exception e) {
+            return error(e.getMessage());
+        }
+        return success(engThemes);
+    }
+
+    @ApiOperation(value = "查询所有主题")
+    @GetMapping("listAll")
+    public ApiResult listAllTheme() {
+        List<EngThemeVO> engThemes;
+        try {
+            engThemes = engThemeService.listAllTheme();
         } catch (Exception e) {
             return error(e.getMessage());
         }

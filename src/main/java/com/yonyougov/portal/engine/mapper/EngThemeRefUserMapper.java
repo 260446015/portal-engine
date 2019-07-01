@@ -31,4 +31,5 @@ public interface EngThemeRefUserMapper {
 
     List<EngThemeRefUser> selectByUserIdAndActive(@Param("userId")String userId,@Param("active")String active);
 
+    List<EngThemeRefUser> selectByThemeId(String themeId);
 }

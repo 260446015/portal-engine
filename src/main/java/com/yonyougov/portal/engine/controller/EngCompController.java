@@ -25,10 +25,10 @@ public class EngCompController extends BaseController{
     private EngCompService engCompService;
 
     @PostMapping
-    @ApiOperation(value = "增加页面组件")
-    public ApiResult add(@RequestBody EngComp engComp) {
+    @ApiOperation(value = "修改页面组件")
+    public ApiResult update(@RequestBody EngComp engComp) {
         try {
-            engCompService.insert(engComp);
+            engCompService.updateByPrimaryKey(engComp);
         } catch (Exception e) {
             return error(e.getMessage());
         }

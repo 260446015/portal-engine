@@ -23,6 +23,22 @@
     <result column="TEMPLATE" jdbcType="CLOB" property="template" />
     <result column="TEMPLATE_FULL" jdbcType="CLOB" property="templateFull" />
   </resultMap>
+  <resultMap id="EngThemeVO" type="com.yonyougov.portal.engine.dto.EngThemeVO">
+    <id column="ETID" jdbcType="VARCHAR" property="engTheme.id" />
+    <result column="ETNAME" jdbcType="VARCHAR" property="engTheme.name" />
+    <collection property="engComps" ofType="com.yonyougov.portal.engine.entity.EngComp">
+      <id column="id" jdbcType="VARCHAR" property="id"/>
+      <result column="TS" jdbcType="TIMESTAMP" property="ts" />
+      <result column="DR" jdbcType="VARCHAR" property="dr" />
+      <result column="NAME" jdbcType="VARCHAR" property="name" />
+      <result column="TEMPLATE_NAME" jdbcType="VARCHAR" property="templateName" />
+      <result column="URL" jdbcType="VARCHAR" property="url" />
+      <result column="COMP_TYPE" jdbcType="VARCHAR" property="compType" />
+      <result column="ICON" jdbcType="VARCHAR" property="icon" />
+      <result column="TEMPLATE" jdbcType="CLOB" property="template" />
+      <result column="TEMPLATE_FULL" jdbcType="CLOB" property="templateFull" />
+    </collection>
+  </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
@@ -306,6 +322,10 @@
     <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>
     from ENG_THEME
     where DEFAULT_THEME=#{defaultTheme,jdbcType=VARCHAR}
+  </select>
+  <select id="listAllTheme" resultMap="EngThemeVO">
+    select ET.ID ETID,ET.NAME ETNAME,EC.* from ENG_THEME ET INNER JOIN ENG_THEME_REF_COMP ETRC ON ET.ID = ETRC.THEME_ID
+    INNER JOIN ENG_COMP EC ON ETRC.COMP_ID = EC.ID
   </select>
 
 

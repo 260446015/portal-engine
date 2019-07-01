@@ -1,11 +1,14 @@
 package com.yonyougov.portal.engine.dto;
 
+import com.yonyougov.portal.engine.entity.EngComp;
+import com.yonyougov.portal.engine.entity.EngTheme;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author yindwe@yonyou.com
@@ -22,4 +25,6 @@ public class EngThemeVO implements Serializable {
     private String themeId;
     @ApiModelProperty(value = "组装成功后前台显示的页面")
     private String successAssemblyHtml;
+    private EngTheme engTheme;
+    private List<EngComp> engComps;
 }

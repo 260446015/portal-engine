@@ -47,4 +47,10 @@ public interface IEngThemeService {
      * @return
      */
     Elements selectByPrimaryKeyForBackstage(String id);
+
+    /**
+     * 查询所有主题，含组件
+     * @return
+     */
+    List<EngThemeVO> listAllTheme();
 }

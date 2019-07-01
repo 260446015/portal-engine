@@ -1,5 +1,6 @@
 package com.yonyougov.portal.engine.mapper;
 
+import com.yonyougov.portal.engine.dto.EngThemeVO;
 import com.yonyougov.portal.engine.entity.EngTheme;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,4 +35,6 @@ public interface EngThemeMapper {
     EngTheme selectByPrimaryKeyWithOutBlob(String id);
 
     EngTheme selectByDefaultTheme(@Param("defaultTheme") String defaultTheme);
+
+    List<EngThemeVO> listAllTheme();
 }
