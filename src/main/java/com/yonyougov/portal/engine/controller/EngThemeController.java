@@ -1,11 +1,14 @@
 package com.yonyougov.portal.engine.controller;
 
 import com.yonyougov.portal.engine.common.MsgConstant;
+import com.yonyougov.portal.engine.common.ThemeEnum;
 import com.yonyougov.portal.engine.dto.ApiResult;
 import com.yonyougov.portal.engine.dto.EngThemeDTO;
 import com.yonyougov.portal.engine.dto.EngThemeVO;
 import com.yonyougov.portal.engine.entity.EngTheme;
+import com.yonyougov.portal.engine.service.EngThemeAbstractService;
 import com.yonyougov.portal.engine.service.IEngThemeService;
+import com.yonyougov.portal.engine.util.BeanNameContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jsoup.select.Elements;
@@ -27,14 +30,18 @@ public class EngThemeController extends BaseController {
 
     @Resource
     private IEngThemeService engThemeService;
+    @Resource
+    private BeanNameContext beanNameContext;
 
-    @ApiOperation(value = "后台管理员新增主题")
-    @PostMapping("backstage")
-    public ApiResult addForBackstage(@RequestBody EngTheme engTheme) {
+    @ApiOperation(value = "后台管理员新增主题0bootstrap/1vue")
+    @PostMapping("backstage/{type}")
+    public ApiResult addForBackstage(@RequestBody EngTheme engTheme, @PathVariable Integer type) {
         try {
             Assert.notNull(engTheme.getName(), "名称不能为空");
             Assert.notNull(engTheme.getTemplate(), "模板内容不能为空");
-            engThemeService.saveOrUpdateToBackstage(engTheme);
+            ThemeEnum themeEnum = type == 0 ? ThemeEnum.VUE : ThemeEnum.BOOTSTRAP;
+            EngThemeAbstractService targetService = themeEnum.getTargetService(themeEnum);
+            targetService.saveOrUpdateToBackstage(engTheme);
         } catch (Exception e) {
             return error(e.getMessage());
         }
@@ -42,8 +49,8 @@ public class EngThemeController extends BaseController {
     }
 
     @ApiOperation(value = "前台新增主题")
-    @PostMapping("front")
-    public ApiResult addForFront(@RequestBody EngThemeDTO engThemeDTO) {
+    @PostMapping("front/{type}")
+    public ApiResult addForFront(@RequestBody EngThemeDTO engThemeDTO,@PathVariable Integer type) {
         try {
             Assert.notNull(engThemeDTO.getName(), "名称不能为空");
             Assert.notNull(engThemeDTO.getInnerData(), "组件与parentId不能为空");

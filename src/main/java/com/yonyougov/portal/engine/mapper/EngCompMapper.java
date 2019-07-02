@@ -29,7 +29,7 @@ public interface EngCompMapper {
 
     int updateByPrimaryKeyWithBLOBs(EngComp record);
 
-    List<EngComp> listAll();
+    List<EngComp> listAll(String compType);
 
     List<EngComp> getThemeRefCompsFromDb(List<String> ids);
 }

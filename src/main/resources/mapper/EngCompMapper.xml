@@ -291,7 +291,7 @@
   </insert>
     <select id="listAll" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" />,<include refid="Blob_Column_List"/>
-        from ENG_COMP
+        from ENG_COMP where COMP_TYPE = #{compType,jdbcType=VARCHAR}
     </select>
   <select id="getThemeRefCompsFromDb" resultMap="ResultMapWithBLOBs">
         select <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>

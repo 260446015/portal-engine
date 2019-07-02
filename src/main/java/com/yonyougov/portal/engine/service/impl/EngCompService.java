@@ -61,8 +61,8 @@ public class EngCompService {
         return engCompMapper.updateByPrimaryKeySelective(record);
     }
 
-    public List<EngComp> listAll() {
-        return engCompMapper.listAll();
+    public List<EngComp> listAll(String compType) {
+        return engCompMapper.listAll(compType);
     }
 
     public int updateBatch(List<EngComp> list) {

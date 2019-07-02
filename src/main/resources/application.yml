@@ -55,7 +55,7 @@ pagehelper:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 server:
-  port: 8082
+  port: 8080
   servlet:
     context-path: /ptp-engine
 

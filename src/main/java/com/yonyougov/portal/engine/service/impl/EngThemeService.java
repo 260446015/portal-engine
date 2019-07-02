@@ -51,37 +51,6 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
         return engThemeMapper.deleteByPrimaryKey(id);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void saveOrUpdateToBackstage(EngTheme record) {
-        //判断传入的数据是否有id，如果有id则进行数据更新；如果没有，则是新增
-        saveOrUpdateTheme(record);
-    }
-
-    protected void saveToBackstage(EngTheme record, List<JSONObject> jsonObjects) {
-        log.info("执行新增开始------>{}", record);
-        record.setDefaultTheme("N");
-        String themeId = saveTheme(record);
-        record.setId(themeId);
-        //存储用户与主题之间的对应关系表
-        saveEngThemeRefComp(record.getId(), jsonObjects);
-    }
-
-    private void saveEngThemeRefComp(String themeId, List<JSONObject> jsonObjects) {
-        jsonObjects.forEach(p -> {
-            String parentId = p.getString(MsgConstant.LAYOUTID);
-            Element element = (Element) p.get(MsgConstant.COMP);
-            EngThemeRefComp engThemeRefComp = new EngThemeRefComp();
-            engThemeRefComp.setCompid(element.attr(MsgConstant.COMP_ID));
-            engThemeRefComp.setThemeId(themeId);
-            engThemeRefComp.setParentId(parentId);
-            //icon和url不做处理，交给组件设计器进行
-//            engThemeRefComp.setIcon("待定");
-//            engThemeRefComp.setUrl(element.attr(MsgConstant.DATA_INTERFACE));
-            engThemeRefCompMapper.insert(engThemeRefComp);
-        });
-    }
-
     public void updateToBackstage(EngTheme record, List<JSONObject> jsonObjects) {
         log.info("执行更新开始------>{}", record);
         updateByPrimaryKeyWithBLOBs(record);
@@ -268,16 +237,6 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
         }));
     }
 
-
-    private void updateEngThemeRefComp(String id, List<JSONObject> jsonObjects) {
-        List<EngThemeRefComp> engThemeRefComps = engThemeRefCompMapper.selectByThemeId(id);
-        jsonObjects.forEach(jsonObject -> engThemeRefComps.forEach(engThemeRefComp -> {
-            if(engThemeRefComp.getParentId().equalsIgnoreCase(jsonObject.getString(MsgConstant.LAYOUTID))){
-                engThemeRefComp.setCompid(jsonObject.getString(MsgConstant.COMP_ID));
-            }
-        }));
-        engThemeRefCompMapper.updateBatch(engThemeRefComps);
-    }
 
     public int insert(EngTheme record) {
         return engThemeMapper.insert(record);
