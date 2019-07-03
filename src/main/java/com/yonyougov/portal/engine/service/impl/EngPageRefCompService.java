@@ -3,7 +3,9 @@ package com.yonyougov.portal.engine.service.impl;
 import com.yonyougov.portal.engine.entity.EngPageRefComp;
 import com.yonyougov.portal.engine.mapper.EngPageRefCompMapper;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author yindwe@yonyu.com

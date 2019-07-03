@@ -24,6 +24,7 @@ public class VueThemeService extends EngThemeAbstractService {
     protected void saveToBackstage(EngTheme record) {
         log.info("------------执行vue的新增主题---------");
         log.info("传入参数为:{}", record);
+        //将传入的json进行处理化
     }
 
     @Override
