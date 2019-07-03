@@ -24,4 +24,5 @@ public class Container implements Serializable {
     private boolean resizable;
     private boolean multiple;
     private List<InnerContainer> lists;
+    private InnerContainer content;
 }

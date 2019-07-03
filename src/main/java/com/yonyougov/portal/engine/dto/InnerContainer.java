@@ -18,4 +18,5 @@ public class InnerContainer implements Serializable {
     private String type;
     private List<String> options;
     private String name;
+    private String compid;
 }
