@@ -3,23 +3,21 @@ package com.yonyougov.portal.engine.entity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
 /**
- * @author yindwe@yonyu.com
- * @Date 2019/5/7 16:37
+ * @Author yindwe@yonyou.com
+ * @Date 2019/7/3
  * @Description
  */
-@ApiModel(value = "EngThemeRefComp")
+@ApiModel(value = "com.yonyougov.portal.engine.entity.EngThemeRefComp")
 @Data
-@Accessors(chain = true)
 public class EngThemeRefComp implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value = "主键",hidden = true)
+    @ApiModelProperty(value = "主键")
     private String id;
 
     /**
@@ -51,6 +49,36 @@ public class EngThemeRefComp implements Serializable {
      */
     @ApiModelProperty(value = "组件图标")
     private String icon;
+
+    /**
+     * x坐标
+     */
+    @ApiModelProperty(value = "x坐标")
+    private String xpoint;
+
+    /**
+     * y坐标
+     */
+    @ApiModelProperty(value = "y坐标")
+    private String ypoint;
+
+    /**
+     * 高度
+     */
+    @ApiModelProperty(value = "高度")
+    private String height;
+
+    /**
+     * 宽度
+     */
+    @ApiModelProperty(value = "宽度")
+    private String width;
+
+    /**
+     * 角标
+     */
+    @ApiModelProperty(value = "角标")
+    private String index;
 
     private static final long serialVersionUID = 1L;
 }

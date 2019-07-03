@@ -8,7 +8,6 @@ import com.yonyougov.portal.engine.dto.EngThemeVO;
 import com.yonyougov.portal.engine.entity.EngTheme;
 import com.yonyougov.portal.engine.service.EngThemeAbstractService;
 import com.yonyougov.portal.engine.service.IEngThemeService;
-import com.yonyougov.portal.engine.util.BeanNameContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.jsoup.select.Elements;
@@ -30,8 +29,6 @@ public class EngThemeController extends BaseController {
 
     @Resource
     private IEngThemeService engThemeService;
-    @Resource
-    private BeanNameContext beanNameContext;
 
     @ApiOperation(value = "后台管理员新增主题0bootstrap/1vue")
     @PostMapping("backstage/{type}")
@@ -55,7 +52,9 @@ public class EngThemeController extends BaseController {
             Assert.notNull(engThemeDTO.getName(), "名称不能为空");
             Assert.notNull(engThemeDTO.getInnerData(), "组件与parentId不能为空");
             Assert.notNull(engThemeDTO.getUserId(), "用户id不能为空");
-            engThemeService.insertToFront(engThemeDTO, engThemeDTO.getUserId());
+            ThemeEnum themeEnum = type == 0 ? ThemeEnum.VUE : ThemeEnum.BOOTSTRAP;
+            EngThemeAbstractService targetService = themeEnum.getTargetService(themeEnum);
+            targetService.insertToFront(engThemeDTO, engThemeDTO.getUserId());
         } catch (Exception e) {
             return error(e.getMessage());
         }

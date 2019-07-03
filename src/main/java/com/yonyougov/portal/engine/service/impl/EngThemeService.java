@@ -1,14 +1,9 @@
 package com.yonyougov.portal.engine.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.yonyougov.portal.engine.ThemeOccupiedException;
 import com.yonyougov.portal.engine.common.MsgConstant;
-import com.yonyougov.portal.engine.dto.EngThemeDTO;
 import com.yonyougov.portal.engine.dto.EngThemeVO;
 import com.yonyougov.portal.engine.entity.*;
 import com.yonyougov.portal.engine.mapper.*;
-import com.yonyougov.portal.engine.service.EngThemeAbstractService;
 import com.yonyougov.portal.engine.service.IEngThemeService;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -31,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class EngThemeService extends EngThemeAbstractService implements IEngThemeService {
+public class EngThemeService implements IEngThemeService {
 
     @Resource
     private EngThemeMapper engThemeMapper;
@@ -51,82 +46,6 @@ public class EngThemeService extends EngThemeAbstractService implements IEngThem
         return engThemeMapper.deleteByPrimaryKey(id);
     }
 
-    public void updateToBackstage(EngTheme record, List<JSONObject> jsonObjects) {
-        log.info("执行更新开始------>{}", record);
-        updateByPrimaryKeyWithBLOBs(record);
-        //检查主题是否被占用，抛出异常
-        checkIfThemeUsed(record.getId());
-        //修改之前关联的comp
-        updateEngThemeRefComp(record.getId(), jsonObjects);
-    }
-
-    private void checkIfThemeUsed(String themeId) {
-        List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByThemeId(themeId);
-        if(engThemeRefUserList.size() != 0){
-            throw new ThemeOccupiedException("主题已被使用");
-        }
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void insertToFront(EngThemeDTO record, String userId) {
-        //存储用户与主题关联关系
-        EngThemeRefUser engThemeRefUser = saveThemeRefUser(record.getThemeId(), userId);
-        //清除之前用户的主题
-        removeOldThemeRefUser(engThemeRefUser.getId());
-        saveThemeRefCompUser(engThemeRefUser, record);
-    }
-
-    private void removeOldThemeRefUser(String themeUserId) {
-        log.info("执行清除用户之前的布局，布局id为：{}", themeUserId);
-        engThemeRefCompUserMapper.deleteByThemeUserId(themeUserId);
-    }
-
-    private void saveThemeRefCompUser(EngThemeRefUser engThemeRefUser, EngThemeDTO record) {
-        //获取所有的组件与parentId的映射关系
-        JSONArray innerData = record.getInnerData();
-        //循环遍历出所有的数据并存储
-        for (int i = 0; i < innerData.size(); i++) {
-            JSONObject object = innerData.getJSONObject(i);
-            String parentId = object.getString(MsgConstant.LAYOUTID);
-            String themeId = engThemeRefUser.getThemeId();
-            String compid = object.getString(MsgConstant.COMP_ID);
-            EngThemeRefComp engThemeRefComp = engThemeRefCompMapper.selectByThemeIdAndCompid(themeId, compid);
-//            EngComp engComp = engCompMapper.selectByPrimaryKey(compid);
-            EngThemeRefCompUser engThemeRefCompUser = new EngThemeRefCompUser();
-            engThemeRefCompUser.setId(engThemeRefComp.getId()).setThemeUserId(engThemeRefUser.getId()).setCompid(compid).setParentId(parentId);
-//                    .setIcon("待定").setUrl(StringUtils.isEmpty(engThemeRefComp) ? engComp.getUrl() : engThemeRefComp.getUrl()).setParentId(parentId);
-            engThemeRefCompUserMapper.insert(engThemeRefCompUser);
-        }
-    }
-
-
-    private String saveTheme(EngTheme theme) {
-        engThemeMapper.insert(theme);
-        return theme.getId();
-    }
-
-    private EngThemeRefUser saveThemeRefUser(String themeId, String userId) {
-        EngThemeRefUser refUser = null;
-        List<EngThemeRefUser> engThemeRefUserList = engThemeRefUserMapper.selectByUserId(userId);
-        //先判断有没有保存过的关联信息
-        if (engThemeRefUserList.size() != 0) {
-            for (EngThemeRefUser engThemeRefUser : engThemeRefUserList) {
-                if (!engThemeRefUser.getThemeId().equals(themeId)) {
-                    engThemeRefUser.setActive(MsgConstant.ACTIVE_FALSE);
-                } else {
-                    refUser = engThemeRefUser;
-                }
-            }
-            engThemeRefUserMapper.updateBatch(engThemeRefUserList);
-        }
-        if (refUser == null) {
-            refUser = new EngThemeRefUser();
-            refUser.setThemeId(themeId).setUserId(userId).setActive(MsgConstant.ACTIVE_TRUE);
-            engThemeRefUserMapper.insert(refUser);
-        }
-        return refUser;
-    }
 
     @Override
     public EngThemeVO selectByUserIdForFront(String userId) {
