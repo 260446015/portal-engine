@@ -3,6 +3,7 @@ package com.yonyougov.portal.engine.entity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Date;
  */
 @ApiModel(value = "com.yonyougov.portal.engine.entity.EngTheme")
 @Data
+@Accessors(chain = true)
 public class EngTheme implements Serializable {
     /**
      * 主键

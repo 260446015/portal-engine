@@ -49,7 +49,7 @@ public class BootstrapThemeService extends EngThemeAbstractService {
         return jsonObjects;
     }
 
-    protected void updateToBackstage(EngTheme record, List<JSONObject> jsonObjects) {
+    private void updateToBackstage(EngTheme record, List<JSONObject> jsonObjects) {
         log.info("执行更新开始------>{}", record);
         updateByPrimaryKeyWithBLOBs(record);
         //检查主题是否被占用，抛出异常
@@ -168,6 +168,7 @@ public class BootstrapThemeService extends EngThemeAbstractService {
 
     @Override
     protected void updateToBackstage(EngTheme record) {
-
+        List<JSONObject> jsonObjects = genDataBaseTemplateHtml(record);
+        updateToBackstage(record,jsonObjects);
     }
 }

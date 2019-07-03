@@ -80,5 +80,17 @@ public class EngThemeRefComp implements Serializable {
     @ApiModelProperty(value = "角标")
     private String index;
 
+    /**
+     * 可拖动标识
+     */
+    @ApiModelProperty(value = "可拖动标识")
+    private String draggable;
+
+    /**
+     * 可调整大小标识
+     */
+    @ApiModelProperty(value = "可调整大小标识")
+    private String resizable;
+
     private static final long serialVersionUID = 1L;
 }

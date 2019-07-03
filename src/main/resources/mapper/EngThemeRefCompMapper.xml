@@ -1,267 +1,294 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yonyougov.portal.engine.mapper.EngThemeRefCompMapper">
-    <resultMap id="BaseResultMap" type="com.yonyougov.portal.engine.entity.EngThemeRefComp">
-        <!--@mbg.generated-->
-        <id column="ID" jdbcType="VARCHAR" property="id"/>
-        <result column="THEME_ID" jdbcType="VARCHAR" property="themeId"/>
-        <result column="COMP_ID" jdbcType="VARCHAR" property="compid"/>
-        <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId"/>
-        <result column="URL" jdbcType="VARCHAR" property="url"/>
-        <result column="ICON" jdbcType="VARCHAR" property="icon"/>
-        <result column="XPOINT" jdbcType="VARCHAR" property="xpoint"/>
-        <result column="YPOINT" jdbcType="VARCHAR" property="ypoint"/>
-        <result column="HEIGHT" jdbcType="VARCHAR" property="height"/>
-        <result column="WIDTH" jdbcType="VARCHAR" property="width"/>
-        <result column="INDEX" jdbcType="VARCHAR" property="index"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--@mbg.generated-->
-        ID, THEME_ID, COMP_ID, PARENT_ID, URL, ICON, XPOINT, YPOINT, HEIGHT, WIDTH, "INDEX"
-    </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-        <!--@mbg.generated-->
-        select
-        <include refid="Base_Column_List"/>
-        from ENG_THEME_REF_COMP
-        where ID = #{id,jdbcType=VARCHAR}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        <!--@mbg.generated-->
-        delete from ENG_THEME_REF_COMP
-        where ID = #{id,jdbcType=VARCHAR}
-    </delete>
-    <insert id="insert" parameterType="com.yonyougov.portal.engine.entity.EngThemeRefComp">
-
-        <selectKey keyProperty="id" resultType="String" order="BEFORE">
-            select sys_guid() from dual
-        </selectKey>
-        insert into ENG_THEME_REF_COMP (ID, THEME_ID, COMP_ID,
-        PARENT_ID, URL, ICON,
-        XPOINT, YPOINT, HEIGHT,
-        WIDTH, "INDEX")
-        values (#{id,jdbcType=VARCHAR}, #{themeId,jdbcType=VARCHAR}, #{compid,jdbcType=VARCHAR},
-        #{parentId,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR},
-        #{xpoint,jdbcType=VARCHAR}, #{ypoint,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR},
-        #{width,jdbcType=VARCHAR}, #{index,jdbcType=VARCHAR})
-    </insert>
-    <insert id="insertSelective" parameterType="com.yonyougov.portal.engine.entity.EngThemeRefComp">
-        <!--@mbg.generated-->
-        insert into ENG_THEME_REF_COMP
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                ID,
-            </if>
-            <if test="themeId != null">
-                THEME_ID,
-            </if>
-            <if test="compid != null">
-                COMP_ID,
-            </if>
-            <if test="parentId != null">
-                PARENT_ID,
-            </if>
-            <if test="url != null">
-                URL,
-            </if>
-            <if test="icon != null">
-                ICON,
-            </if>
-            <if test="xpoint != null">
-                XPOINT,
-            </if>
-            <if test="ypoint != null">
-                YPOINT,
-            </if>
-            <if test="height != null">
-                HEIGHT,
-            </if>
-            <if test="width != null">
-                WIDTH,
-            </if>
-            <if test="index != null">
-                "INDEX",
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=VARCHAR},
-            </if>
-            <if test="themeId != null">
-                #{themeId,jdbcType=VARCHAR},
-            </if>
-            <if test="compid != null">
-                #{compid,jdbcType=VARCHAR},
-            </if>
-            <if test="parentId != null">
-                #{parentId,jdbcType=VARCHAR},
-            </if>
-            <if test="url != null">
-                #{url,jdbcType=VARCHAR},
-            </if>
-            <if test="icon != null">
-                #{icon,jdbcType=VARCHAR},
-            </if>
-            <if test="xpoint != null">
-                #{xpoint,jdbcType=VARCHAR},
-            </if>
-            <if test="ypoint != null">
-                #{ypoint,jdbcType=VARCHAR},
-            </if>
-            <if test="height != null">
-                #{height,jdbcType=VARCHAR},
-            </if>
-            <if test="width != null">
-                #{width,jdbcType=VARCHAR},
-            </if>
-            <if test="index != null">
-                #{index,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yonyougov.portal.engine.entity.EngThemeRefComp">
-        <!--@mbg.generated-->
-        update ENG_THEME_REF_COMP
-        <set>
-            <if test="themeId != null">
-                THEME_ID = #{themeId,jdbcType=VARCHAR},
-            </if>
-            <if test="compid != null">
-                COMP_ID = #{compid,jdbcType=VARCHAR},
-            </if>
-            <if test="parentId != null">
-                PARENT_ID = #{parentId,jdbcType=VARCHAR},
-            </if>
-            <if test="url != null">
-                URL = #{url,jdbcType=VARCHAR},
-            </if>
-            <if test="icon != null">
-                ICON = #{icon,jdbcType=VARCHAR},
-            </if>
-            <if test="xpoint != null">
-                XPOINT = #{xpoint,jdbcType=VARCHAR},
-            </if>
-            <if test="ypoint != null">
-                YPOINT = #{ypoint,jdbcType=VARCHAR},
-            </if>
-            <if test="height != null">
-                HEIGHT = #{height,jdbcType=VARCHAR},
-            </if>
-            <if test="width != null">
-                WIDTH = #{width,jdbcType=VARCHAR},
-            </if>
-            <if test="index != null">
-                "INDEX" = #{index,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where ID = #{id,jdbcType=VARCHAR}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.yonyougov.portal.engine.entity.EngThemeRefComp">
-        <!--@mbg.generated-->
-        update ENG_THEME_REF_COMP
-        set THEME_ID = #{themeId,jdbcType=VARCHAR},
+  <resultMap id="BaseResultMap" type="com.yonyougov.portal.engine.entity.EngThemeRefComp">
+    <!--@mbg.generated-->
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="THEME_ID" jdbcType="VARCHAR" property="themeId" />
+    <result column="COMP_ID" jdbcType="VARCHAR" property="compid" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="ICON" jdbcType="VARCHAR" property="icon" />
+    <result column="XPOINT" jdbcType="VARCHAR" property="xpoint" />
+    <result column="YPOINT" jdbcType="VARCHAR" property="ypoint" />
+    <result column="HEIGHT" jdbcType="VARCHAR" property="height" />
+    <result column="WIDTH" jdbcType="VARCHAR" property="width" />
+    <result column="INDEX" jdbcType="VARCHAR" property="index" />
+    <result column="DRAGGABLE" jdbcType="VARCHAR" property="draggable" />
+    <result column="RESIZABLE" jdbcType="VARCHAR" property="resizable" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    ID, THEME_ID, COMP_ID, PARENT_ID, URL, ICON, XPOINT, YPOINT, HEIGHT, WIDTH, "INDEX", 
+    DRAGGABLE, RESIZABLE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from ENG_THEME_REF_COMP
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from ENG_THEME_REF_COMP
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yonyougov.portal.engine.entity.EngThemeRefComp">
+    <!--@mbg.generated-->
+    insert into ENG_THEME_REF_COMP (ID, THEME_ID, COMP_ID, 
+      PARENT_ID, URL, ICON, 
+      XPOINT, YPOINT, HEIGHT, 
+      WIDTH, "INDEX", DRAGGABLE, 
+      RESIZABLE)
+    values (#{id,jdbcType=VARCHAR}, #{themeId,jdbcType=VARCHAR}, #{compid,jdbcType=VARCHAR},
+      #{parentId,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{xpoint,jdbcType=VARCHAR}, #{ypoint,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR}, 
+      #{width,jdbcType=VARCHAR}, #{index,jdbcType=VARCHAR}, #{draggable,jdbcType=VARCHAR}, 
+      #{resizable,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yonyougov.portal.engine.entity.EngThemeRefComp">
+    <!--@mbg.generated-->
+    insert into ENG_THEME_REF_COMP
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="themeId != null">
+        THEME_ID,
+      </if>
+      <if test="compid != null">
+        COMP_ID,
+      </if>
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="url != null">
+        URL,
+      </if>
+      <if test="icon != null">
+        ICON,
+      </if>
+      <if test="xpoint != null">
+        XPOINT,
+      </if>
+      <if test="ypoint != null">
+        YPOINT,
+      </if>
+      <if test="height != null">
+        HEIGHT,
+      </if>
+      <if test="width != null">
+        WIDTH,
+      </if>
+      <if test="index != null">
+        "INDEX",
+      </if>
+      <if test="draggable != null">
+        DRAGGABLE,
+      </if>
+      <if test="resizable != null">
+        RESIZABLE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="themeId != null">
+        #{themeId,jdbcType=VARCHAR},
+      </if>
+      <if test="compid != null">
+        #{compid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="xpoint != null">
+        #{xpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="ypoint != null">
+        #{ypoint,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null">
+        #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="width != null">
+        #{width,jdbcType=VARCHAR},
+      </if>
+      <if test="index != null">
+        #{index,jdbcType=VARCHAR},
+      </if>
+      <if test="draggable != null">
+        #{draggable,jdbcType=VARCHAR},
+      </if>
+      <if test="resizable != null">
+        #{resizable,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yonyougov.portal.engine.entity.EngThemeRefComp">
+    <!--@mbg.generated-->
+    update ENG_THEME_REF_COMP
+    <set>
+      <if test="themeId != null">
+        THEME_ID = #{themeId,jdbcType=VARCHAR},
+      </if>
+      <if test="compid != null">
         COMP_ID = #{compid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
         PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
         URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
         ICON = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="xpoint != null">
         XPOINT = #{xpoint,jdbcType=VARCHAR},
+      </if>
+      <if test="ypoint != null">
         YPOINT = #{ypoint,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null">
         HEIGHT = #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="width != null">
         WIDTH = #{width,jdbcType=VARCHAR},
-        "INDEX" = #{index,jdbcType=VARCHAR}
-        where ID = #{id,jdbcType=VARCHAR}
-    </update>
-
-    <insert id="batchInsert" parameterType="map">
-        <!--@mbg.generated-->
-        insert into ENG_THEME_REF_COMP
-        (ID, THEME_ID, COMP_ID, PARENT_ID, URL, ICON, XPOINT, YPOINT, HEIGHT, WIDTH, "INDEX"
-        )
-        values
-        <foreach collection="list" item="item" separator=",">
-            (#{item.id,jdbcType=VARCHAR}, #{item.themeId,jdbcType=VARCHAR}, #{item.compid,jdbcType=VARCHAR},
-            #{item.parentId,jdbcType=VARCHAR}, #{item.url,jdbcType=VARCHAR}, #{item.icon,jdbcType=VARCHAR},
-            #{item.xpoint,jdbcType=VARCHAR}, #{item.ypoint,jdbcType=VARCHAR}, #{item.height,jdbcType=VARCHAR},
-            #{item.width,jdbcType=VARCHAR}, #{item.index,jdbcType=VARCHAR})
+      </if>
+      <if test="index != null">
+        "INDEX" = #{index,jdbcType=VARCHAR},
+      </if>
+      <if test="draggable != null">
+        DRAGGABLE = #{draggable,jdbcType=VARCHAR},
+      </if>
+      <if test="resizable != null">
+        RESIZABLE = #{resizable,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yonyougov.portal.engine.entity.EngThemeRefComp">
+    <!--@mbg.generated-->
+    update ENG_THEME_REF_COMP
+    set THEME_ID = #{themeId,jdbcType=VARCHAR},
+      COMP_ID = #{compid,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      URL = #{url,jdbcType=VARCHAR},
+      ICON = #{icon,jdbcType=VARCHAR},
+      XPOINT = #{xpoint,jdbcType=VARCHAR},
+      YPOINT = #{ypoint,jdbcType=VARCHAR},
+      HEIGHT = #{height,jdbcType=VARCHAR},
+      WIDTH = #{width,jdbcType=VARCHAR},
+      "INDEX" = #{index,jdbcType=VARCHAR},
+      DRAGGABLE = #{draggable,jdbcType=VARCHAR},
+      RESIZABLE = #{resizable,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update ENG_THEME_REF_COMP
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="THEME_ID = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.themeId,jdbcType=VARCHAR}
         </foreach>
-    </insert>
-
-    <update id="updateBatch" parameterType="java.util.List">
-        <!--
-          WARNING - @mbg.generated
-          This element is automatically generated by MyBatis Generator, do not modify.
-        -->
-        update ENG_THEME_REF_COMP
-        <trim prefix="set" suffixOverrides=",">
-            <trim prefix="THEME_ID = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.themeId,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-            <trim prefix="COMP_ID = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.compid,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-            <trim prefix="PARENT_ID = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.parentId,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-            <trim prefix="URL = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.url,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-            <trim prefix="ICON = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.icon,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-            <trim prefix="XPOINT = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.xpoint,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-            <trim prefix="YPOINT = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.ypoint,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-            <trim prefix="HEIGHT = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.height,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-            <trim prefix="WIDTH = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.width,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-            <trim prefix="INDEX = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    when ID = #{item.id,jdbcType=VARCHAR} then #{item.index,jdbcType=VARCHAR}
-                </foreach>
-            </trim>
-        </trim>
-        where ID in
-        <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.id,jdbcType=VARCHAR}
+      </trim>
+      <trim prefix="COMP_ID = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.compid,jdbcType=VARCHAR}
         </foreach>
-    </update>
-    <select id="selectByThemeId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ENG_THEME_REF_COMP where theme_id = #{id,jdbcType=VARCHAR}
-    </select>
-    <delete id="deleteByThemeId">
+      </trim>
+      <trim prefix="PARENT_ID = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.parentId,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="URL = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.url,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="ICON = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.icon,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="XPOINT = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.xpoint,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="YPOINT = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.ypoint,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="HEIGHT = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.height,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="WIDTH = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.width,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="INDEX = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.index,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="DRAGGABLE = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.draggable,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="RESIZABLE = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when ID = #{item.id,jdbcType=VARCHAR} then #{item.resizable,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+    </trim>
+    where ID in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.id,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+  <insert id="batchInsert" parameterType="map">
+    <!--@mbg.generated-->
+    insert into ENG_THEME_REF_COMP
+    (ID, THEME_ID, COMP_ID, PARENT_ID, URL, ICON, XPOINT, YPOINT, HEIGHT, WIDTH, "INDEX", 
+      DRAGGABLE, RESIZABLE)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.themeId,jdbcType=VARCHAR}, #{item.compid,jdbcType=VARCHAR},
+        #{item.parentId,jdbcType=VARCHAR}, #{item.url,jdbcType=VARCHAR}, #{item.icon,jdbcType=VARCHAR}, 
+        #{item.xpoint,jdbcType=VARCHAR}, #{item.ypoint,jdbcType=VARCHAR}, #{item.height,jdbcType=VARCHAR}, 
+        #{item.width,jdbcType=VARCHAR}, #{item.index,jdbcType=VARCHAR}, #{item.draggable,jdbcType=VARCHAR}, 
+        #{item.resizable,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <select id="selectByThemeId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from ENG_THEME_REF_COMP where theme_id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByThemeId">
       delete from ENG_THEME_REF_COMP where theme_id = #{id,jdbcType=VARCHAR}
     </delete>
-    <select id="selectByThemeIdAndCompid" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from ENG_THEME_REF_COMP
-        where COMP_ID = #{compid,jdbcType=VARCHAR} and THEME_ID = #{themeId,jdbcType=VARCHAR}
-    </select>
-
+  <select id="selectByThemeIdAndCompid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from ENG_THEME_REF_COMP
+    where COMP_ID = #{compid,jdbcType=VARCHAR} and THEME_ID = #{themeId,jdbcType=VARCHAR}
+  </select>
 </mapper>
